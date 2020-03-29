@@ -1,0 +1,47 @@
+<Page
+        navigatingTo="onNavigatingTo"
+        xmlns="http://schemas.nativescript.org/tns.xsd"
+        xmlns:pr="nativescript-pull-reveal"
+>
+
+    <ActionBar>
+        <Label text="Pull Reveal Experiments"></Label>
+    </ActionBar>
+
+    <pr:PullRevealPage> <!-- grid wrapper -->
+        <StackLayout> <!-- user content -->
+            <Image src="~/images/happyface.png"/>
+            <Label text="Here is some content"/>
+        </StackLayout>
+
+        <pr:PullReveal id="pullDrawer" anchor="bottom" label="This is an example" backgroundColor="black" color="whitesmoke" >
+            <Label text="Item 1"/>
+            <Label text="Item 2"/>
+            <Label text="Item 3"/>
+            <Label text="Item 4"/>
+            <Label text="Item 5"/>
+            <Label text="Item 6"/>
+            <Label text="Item 7"/>
+            <Label text="Item 8"/>
+            <Label text="Item 9"/>
+            <flexbox-layout >
+                <Button text="tap to close" tap="closeDrawer" fontSize="12"/>
+                <Label text = "Have a nice day"/>
+                <Label width="20"/>
+                <Image src="~/images/happyface.png" width="20" height="20" />
+            </flexbox-layout>
+            <Label text="Item 10"/>
+            <Label text="Item 11"/>
+            <Label text="Item 12"/>
+            <Label text="Item 13"/>
+            <Label text="Item 14"/>
+            <Label text="Item 15"/>
+            <Label text="Item 16"/>
+            <Label text="Item 17"/>
+            <Label text="Item 18"/>
+            <Label text="Item 19"/>
+            <Label text="Item 20"/>
+        </pr:PullReveal>
+    </pr:PullRevealPage>
+
+</Page>
