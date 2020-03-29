@@ -37,6 +37,7 @@ export class CommonContents extends StackLayout {
     // todo: review
     this.width = PercentLength.parse('100%');
     this.paddingBottom = 0;
+    this.paddingTop = 0;
 
     this.anchor = this.get('anchor') || 'bottom';
     this.label = this.get('label') || '';
@@ -46,45 +47,54 @@ export class CommonContents extends StackLayout {
       if (this._isLoaded) {
         if (!this._didLayout) {
           this._didLayout = true;
-          // get the measurements we need
-          let mheight = this.getMeasuredHeight();
-          const pheight = Number(this.height) || 0;
-          const screenHeight = screen.mainScreen.heightDIPs;
-          const currentY = this.getLocationOnScreen().y;
-          // console.log('screenHeight is ' + screenHeight);
-          // console.log('currentY is ' + currentY);
-          // console.log('mheight is ' + mheight);
-          // console.log('pheight is ' + pheight);
-          // console.log('scale is ' + scale);
+          setTimeout(() => {
+            // get the measurements we need
+            let mheight = this.getMeasuredHeight();
+            let cheight  = this.computeHeight();
+            let scheight = mheight / scale;
+            const pheight = Number(this.height) || 0;
+            const screenHeight = screen.mainScreen.heightDIPs;
+            console.log(this.getLocationOnScreen());
+            const currentY = this.getLocationOnScreen().y;
+            console.log('screenHeight is ' + screenHeight);
+            console.log('currentY is ' + currentY);
+            console.log('mheight is ' + mheight);
+            console.log('cheight is ' + cheight);
+            console.log('pheight is ' + pheight);;
+            console.log('scale is ' + scale);
 
-          // console.log('anchor is ' + this.anchor)
-          if (this.anchor === 'bottom') {
-            const ty = screenHeight - this.minHt - currentY;
-            const cmxlt = screenHeight - mheight / scale + this.minHt;
-            this.minxlat =  cmxlt;
-            // console.log('ty is ' + ty);
-            // console.log('minxlat is ' + this.minxlat);
-            // console.log('computed minxlat is ' + cmxlt)
-            // console.log('minHt is ' + this.minHt);
-            this.xlat = this.maxxlat = ty;
-            this.translateY = ty;
-            this.height = this.minHt;
-          } else {
-            // top...
-            const ty = currentY - screenHeight + this.minHt * scale - 0;
-            this.minxlat = ty + this.minHt;
-            this.maxxlat = -this.minHt * scale;
-            // console.log('ty is ' + ty);
-            // console.log('minxlat is ' + this.minxlat);
-            // console.log('maxxlat is ' + this.maxxlat);
-            // console.log('minHt is ' + this.minHt);
-            this.xlat = ty + this.minHt;
 
-            setTimeout(() => {
-              this.height = 450; // screenHeight - mheight / scale + this.minHt;
-              });
-          }
-          this.translateY = this.xlat;
+            let ty;
+            console.log('anchor is ' + this.anchor);
+            if (this.anchor === 'bottom') {
+              if (this.ios) {
+                ty = currentY + screenHeight - cheight + this.minHt * scale;
+                this.minxlat = ty - cheight + this.minHt;
+                this.maxxlat = ty;
+                this.xlat = ty;
+                this.height = cheight;
+              } else {
+                // android bottom
+              }
+            } else {
+              // top...
+              if (this.ios) {
+                ty = currentY - screenHeight + cheight - this.minHt * scale;
+                this.minxlat = ty;
+                this.maxxlat = ty + cheight - this.minHt;
+                this.xlat = ty;
+                this.height = cheight;
+              } else {
+                // android top
+              }
+            }
+            console.log('------')
+            console.log('ty is ' + ty);
+            console.log('minxlat is ' + this.minxlat);
+            console.log('maxxlat is ' + this.maxxlat);
+            console.log('minHt is ' + this.minHt);
+            this.translateY = this.xlat;
+          });
         }
       }
     });
@@ -100,6 +110,7 @@ export class CommonContents extends StackLayout {
       pullLabel.fontSize = 10;
       pullLabel.textWrap = true;
       pullLabel.textAlignment = 'center';
+      pullLabel.paddingTop = 0;
       let t;
       if (this.anchor === 'bottom') {
         t = '\u21D5\u21D5\n';
@@ -114,6 +125,16 @@ export class CommonContents extends StackLayout {
     });
 
     this.on(GestureTypes.pan, args => { this.onPan(args as PanGestureEventData); });
+  }
+
+  computeHeight () {
+    let totalHeight = 0;
+    this.eachChildView((child ) => {
+      const h = child.getMeasuredHeight() / scale;
+      totalHeight += h;
+      return true;
+    });
+    return totalHeight;
   }
 
   /**
@@ -146,7 +167,7 @@ export class CommonContents extends StackLayout {
       }
       this.translateY = this.xlat;
     }
-    // console.log(`moved ${change}. xlat is ${this.xlat} height is ${this.height} ${this.minxlat}, ${this.maxxlat}`);
+    console.log(`moved ${change}. xlat is ${this.xlat} height is ${this.height} ${this.minxlat}, ${this.maxxlat}`);
   }
 
   /**
@@ -166,7 +187,7 @@ export class CommonContents extends StackLayout {
     } else {
       limit = this.maxxlat;
     }
-    // console.log('opening....');
+    console.log('opening....');
 
     if (!animTime) {
       this.translateY = limit;
@@ -203,7 +224,7 @@ export class CommonContents extends StackLayout {
     } else {
       limit = this.minxlat;
     }
-    // console.log('closing....');
+    console.log('closing....');
 
     if (!animTime) {
       this.translateY = limit;
