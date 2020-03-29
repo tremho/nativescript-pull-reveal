@@ -71,15 +71,11 @@ export class CommonContents extends StackLayout {
                 ty = currentY + screenHeight - cheight + this.minHt * scale;
                 this.minxlat = ty - cheight + this.minHt;
                 this.maxxlat = ty;
-                this.xlat = ty;
-                this.height = cheight;
               } else {
                 // android bottom
                 ty = cheight;
                 this.maxxlat = ty;
                 this.minxlat = this.maxxlat - cheight + this.minHt + 4; // pad?
-                this.xlat = ty;
-                this.height = cheight;
               }
             } else {
               // top...
@@ -87,15 +83,11 @@ export class CommonContents extends StackLayout {
                 ty = currentY - screenHeight + cheight - this.minHt * scale;
                 this.minxlat = ty;
                 this.maxxlat = ty + cheight - this.minHt;
-                this.xlat = ty;
-                this.height = cheight;
               } else {
                 // android top
                 ty = -cheight;
                 this.minxlat = ty;
                 this.maxxlat = this.minxlat + cheight - this.minHt - 4; // is the 4 padding or what?
-                this.xlat = ty;
-                this.height = cheight;
               }
             }
             console.log('------')
@@ -103,6 +95,8 @@ export class CommonContents extends StackLayout {
             console.log('minxlat is ' + this.minxlat);
             console.log('maxxlat is ' + this.maxxlat);
             console.log('minHt is ' + this.minHt);
+            this.xlat = ty;
+            this.height = cheight;
             this.translateY = this.xlat;
           });
         }
