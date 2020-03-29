@@ -15,7 +15,11 @@
 [twitter-image]:https://img.shields.io/twitter/follow/Tremho1.svg?style=social&label=Follow%20me
 [twitter-url]:https://twitter.com/Tremho1
 
-
+<figure class="video_container">
+  <video controls="true" allowfullscreen="false" poster="android-stil.png">
+    <source src="android-movie" type="video/mp4">
+  </video>
+</figure>
 
 ## Features
 - Panel slides over content from top or from bottom
@@ -64,7 +68,7 @@ First, you must declare your page is hosting a PullReveal context.
 This is done by putting the `<pr:PullRequestPage>` tag at the top of your
 page, and encompassing your page layout.
 
-For example, support your non-pull-reveal-enhanced page looks like this:
+For example, suppose your non-pull-reveal-enhanced page looks like this:
 
 ```xml
     <StackLayout> 
