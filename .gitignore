@@ -6,6 +6,7 @@
 *.js.map
 *.log
 src/*.d.ts
+src/platforms/android/nativescript_pull_reveal.aar
 !src/index.d.ts
 !src/references.d.ts
 !src/scripts/*.js
@@ -20,6 +21,7 @@ demo/lib
 demo/platforms
 node_modules
 publish/src
+publish/package-lock.json
 publish/package
 demo/report/report.html
 demo/report/stats.json

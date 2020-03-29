@@ -211,6 +211,17 @@ and the following methods:
 As of  3/29/2020 this is the first version released for testing.
 
 As issues arise, they will be recorded in this space.
+
+###### Version 1.0.0
+- Not working properly on iOS. 
+  - Bottom anchor label is too low, exposed portion too small
+  - slide stops not working or not in correct position
+  - Top anchor beyond screen, making it unusable.  
+
+Currently working on these issues...
+  
+----------
+  
  
 
 ## Source code and Contributing

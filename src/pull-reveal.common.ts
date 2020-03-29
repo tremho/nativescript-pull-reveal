@@ -29,12 +29,17 @@ export class CommonContents extends StackLayout {
   private xlat: number = 0;
   private minHt: number = 30;
   private dragspeed: number = 5;
+  private anchor: string;
+  private label: string;
 
   constructor() {
     super();
     // todo: review
     this.width = PercentLength.parse('100%');
     this.paddingBottom = 0;
+
+    this.anchor = this.get('anchor') || 'bottom';
+    this.label = this.get('label') || '';
 
     this.on('layoutChanged', (eventData: EventData) => {
       const lbl = eventData.object as CommonContents;
@@ -218,29 +223,29 @@ export class CommonContents extends StackLayout {
     setTimeout(cycle);
   }
 
-  /**
-   * Gets the text that should appear on the 'handle' of the drawer.
-   */
-  public get label() {
-    return this.get('label') || '';
-  }
-  /**
-   * Sets the text that should appear on the 'handle' of the drawer.
-   */
-  public set label(v: string) {
-    this.set('label', v);
-  }
-  /**
-   * Gets the position of the drawer home. Either 'top' or 'bottom' (default)
-   */
-  public get anchor() {
-    return this.get('anchor') || 'bottom';
-  }
-  /**
-   * Sets the position of the drawer home. Either 'top' or 'bottom' (default)
-   */
-  public set anchor(v: string) {
-    this.set('anchor', v);
-  }
+  // /**
+  //  * Gets the text that should appear on the 'handle' of the drawer.
+  //  */
+  // public get label() {
+  //   return this.get('label') || '';
+  // }
+  // /**
+  //  * Sets the text that should appear on the 'handle' of the drawer.
+  //  */
+  // public set label(v: string) {
+  //   this.set('label', v);
+  // }
+  // /**
+  //  * Gets the position of the drawer home. Either 'top' or 'bottom' (default)
+  //  */
+  // public get anchor() {
+  //   return this.get('anchor') || 'bottom';
+  // }
+  // /**
+  //  * Sets the position of the drawer home. Either 'top' or 'bottom' (default)
+  //  */
+  // public set anchor(v: string) {
+  //   this.set('anchor', v);
+  // }
 }
 
