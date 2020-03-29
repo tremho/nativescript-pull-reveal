@@ -14,7 +14,7 @@
             <Label text="Here is some content"/>
         </StackLayout>
 
-        <pr:PullReveal id="pullDrawer" anchor="top" label="This is an example" backgroundColor="black" color="whitesmoke" >
+        <pr:PullReveal id="pullDrawer" anchor="bottom" label="This is an example" backgroundColor="black" color="whitesmoke" >
             <Label text="Item 1"/>
             <Label text="Item 2"/>
             <Label text="Item 3"/>
