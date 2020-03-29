@@ -15,11 +15,8 @@
 [twitter-image]:https://img.shields.io/twitter/follow/Tremho1.svg?style=social&label=Follow%20me
 [twitter-url]:https://twitter.com/Tremho1
 
-<figure class="video_container">
-  <video controls="true" allowfullscreen="false" poster="android-stil.png">
-    <source src="android-movie" type="video/mp4">
-  </video>
-</figure>
+![demo video](android-movie.gif)
+
 
 ## Features
 - Panel slides over content from top or from bottom
