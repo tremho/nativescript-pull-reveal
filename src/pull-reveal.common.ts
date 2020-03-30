@@ -27,10 +27,13 @@ export class CommonContents extends StackLayout {
   private minxlat: number;
   private maxxlat: number;
   private xlat: number = 0;
-  private minHt: number = 30;
+  private minHt: number = 0;
   private dragspeed: number = 5;
   private anchor: string;
   private label: string;
+  // private grabArea: StackLayout; // not using a container due to bug
+  private pullLabel: Label;
+  private pullHandle: Label;
 
   constructor() {
     super();
@@ -49,18 +52,20 @@ export class CommonContents extends StackLayout {
           this._didLayout = true;
           setTimeout(() => {
             // get the measurements we need
+            const nom = 667;
             let mheight = this.getMeasuredHeight();
             let cheight  = this.computeHeight();
             let scheight = mheight / scale;
             const pheight = Number(this.height) || 0;
             const screenHeight = screen.mainScreen.heightDIPs;
-            console.log(this.getLocationOnScreen());
+            const nomRat = screenHeight / nom;
             const currentY = this.getLocationOnScreen().y;
             console.log('screenHeight is ' + screenHeight);
             console.log('currentY is ' + currentY);
             console.log('mheight is ' + mheight);
             console.log('cheight is ' + cheight);
-            console.log('pheight is ' + pheight);;
+            console.log('scheight is ' + scheight);
+            console.log('pheight is ' + pheight);
             console.log('scale is ' + scale);
 
 
@@ -68,8 +73,16 @@ export class CommonContents extends StackLayout {
             console.log('anchor is ' + this.anchor);
             if (this.anchor === 'bottom') {
               if (this.ios) {
-                ty = currentY + screenHeight - cheight + this.minHt * scale;
-                this.minxlat = ty - cheight + this.minHt;
+                ty =  - (this.minHt - ( screenHeight - scheight + cheight) - 4); // this 4...
+                if (screenHeight > nom) {
+                  // ty -= this.minHt / scale;
+                  ty += this.minHt / scale;
+                  if (screenHeight > 1000) { // ipad
+                    ty = nom + 4;
+                  }
+                }
+                // ty = - (this.minHt - ( nom - scheight + cheight) - 4); // this 4...
+                this.minxlat = ty - cheight + this.minHt + 4 + 2; // a new mystery number...
                 this.maxxlat = ty;
               } else {
                 // android bottom
@@ -80,9 +93,15 @@ export class CommonContents extends StackLayout {
             } else {
               // top...
               if (this.ios) {
-                ty = currentY - screenHeight + cheight - this.minHt * scale;
+                ty = this.minHt - ( screenHeight - scheight + cheight) - 4; // this 4...
+                if (screenHeight > nom) {
+                  ty += this.minHt / scale;
+                  if (screenHeight > 1000) { // ipad
+                      ty = -nom - 4;
+                  }
+                }
                 this.minxlat = ty;
-                this.maxxlat = ty + cheight - this.minHt;
+                this.maxxlat = ty + cheight - this.minHt - 4; // mystery 4 again
               } else {
                 // android top
                 ty = -cheight;
@@ -90,7 +109,7 @@ export class CommonContents extends StackLayout {
                 this.maxxlat = this.minxlat + cheight - this.minHt - 4; // is the 4 padding or what?
               }
             }
-            console.log('------')
+            console.log('------');
             console.log('ty is ' + ty);
             console.log('minxlat is ' + this.minxlat);
             console.log('maxxlat is ' + this.maxxlat);
@@ -107,25 +126,36 @@ export class CommonContents extends StackLayout {
       ///
       // todo: replace this multiline thing with a stacklayout with icon and label
       ///
+      // todo: file a bug report with Nativescript core.
+      //        IOS nested container bug prevents us from doing this there
+      //       and pretty much prohibits any meaningful user content layout schemes also.
+      ///
       const labelText = this.label;
-      const pullLabel = new Label();
-      pullLabel.marginBottom = 0;
-      pullLabel.paddingBottom = 0;
-      pullLabel.fontSize = 10;
-      pullLabel.textWrap = true;
-      pullLabel.textAlignment = 'center';
-      pullLabel.paddingTop = 0;
+      const handle = new Label();
+      handle.className = 'pull-reveal-handle';
+      this.pullHandle = handle;
+      handle.text = '\u21D5\u21D5';
+      handle.textAlignment = 'center';
+      handle.paddingTop = handle.paddingBottom = handle.marginBottom = handle.marginTop = 0;
+      if (labelText) {
+        const pullLabel = new Label();
+        pullLabel.className = 'pull-reveal-label';
+        pullLabel.text = labelText;
+        this.pullLabel = pullLabel;
+        pullLabel.marginBottom = 0;
+        pullLabel.paddingBottom = 0;
+        pullLabel.textWrap = true;
+        pullLabel.textAlignment = 'center';
+        pullLabel.paddingTop = 0;
+      }
       let t;
       if (this.anchor === 'bottom') {
-        t = '\u21D5\u21D5\n';
-        if (labelText) t += labelText;
-        this.insertChild(pullLabel, 0);
+        this.insertChild(this.pullLabel, 0);
+        if (labelText) this.insertChild(this.pullHandle, 0);
       } else {
-        t = labelText + '\n\u21D5\u21D5';
-        this.addChild(pullLabel);
+        if (labelText) this.addChild(this.pullLabel);
+        this.addChild(this.pullHandle);
       }
-      pullLabel.text = t;
-
     });
 
     this.on(GestureTypes.pan, args => { this.onPan(args as PanGestureEventData); });
@@ -133,11 +163,15 @@ export class CommonContents extends StackLayout {
 
   computeHeight () {
     let totalHeight = 0;
-    this.eachChildView((child ) => {
+    this.eachChildView(child  => {
       const h = child.getMeasuredHeight() / scale;
       totalHeight += h;
       return true;
     });
+    this.minHt = this.pullHandle.getMeasuredHeight() / scale;
+    if (this.pullLabel) {
+      this.minHt += this.pullLabel.getMeasuredHeight() / scale;
+    }
     return totalHeight;
   }
 

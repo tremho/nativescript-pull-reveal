@@ -19,8 +19,4 @@ export function onNavigatingTo(args: NavigatedData) {
 export function closeDrawer (args:EventData) {
     console.log('close drawer');
     pullDrawer.close(3000);
-    setTimeout(() => {
-        console.log('starting open')
-        pullDrawer.open(2000)
-    }, 5000)
 }

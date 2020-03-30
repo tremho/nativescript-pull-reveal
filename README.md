@@ -205,11 +205,20 @@ and the following methods:
 | `open` | animTime: number | Opens the panel programatically, if optional animTime parameter is passed, it is the number of milliseconds the opening will take. |
 | `close` | animTime: number | Closes the panel programatically, if optional animTime parameter is passed, it is the number of milliseconds the closing will take. |
 
+#### CSS
+The exposed portion of the Pull Reveal drawer consists of the 'handle', which features the text of two double - ended
+arrows  (unicode 21D5) at the outermost edge, and followed by the label text, if it has been provided
+using the 'label' property.
+
+THe 'handle' portion of this area is tagged with the CSS class name 'pull-reveal-handle'
+and the 'label' portion has the class name 'pull-reveal-label'.  These may be defined in your
+application CSS to adjust appearances somewhat.
+Be advised there may be unwanted side effects of changing the sizing of these elements very much. 
 
 ## Known Issues
 
 ###### Still early in development!
-As of  3/29/2020 this is the first version released for testing.
+On 3/29/2020 the first version (1.0.0) was released for testing.
 
 As issues arise, they will be recorded in this space.
 
@@ -219,8 +228,17 @@ As issues arise, they will be recorded in this space.
   - slide stops not working or not in correct position
   - Top anchor beyond screen, making it unusable.  
 
-Currently working on these issues...
+###### Version 1.0.1
+- Fixes the primary issues of version 1.0.0.
+- Behavior is consistent between platforms for nominal use cases.
+
+A few known issues remain:
   
+- There is buggy behavior in Nativescript layout handling under iOS that may interfere with proper placement of
+nested containers within the revealed content.  This issue is being investigated with Nativescript community experts.   
+- Changing the handle or label sizes via CSS may not always result in the correctly
+computed drawer stops and/or reveal sizing.  
+- Changing properties (label, anchor) programatically has no effect. 
 ----------
   
  
