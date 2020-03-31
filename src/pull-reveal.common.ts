@@ -67,6 +67,7 @@ export class CommonContents extends StackLayout {
             console.log('scheight is ' + scheight);
             console.log('pheight is ' + pheight);
             console.log('scale is ' + scale);
+            console.log('minHt is ' + this.minHt);
 
 
             let ty;
@@ -75,21 +76,32 @@ export class CommonContents extends StackLayout {
               if (this.ios) {
                 ty =  - (this.minHt - ( screenHeight - scheight + cheight) - 4); // this 4...
                 if (screenHeight > nom) {
-                  // ty -= this.minHt / scale;
-                  ty += this.minHt / scale;
+                  ty += 8;
+                  // ty = screenHeight - cheight + 4;
+                  // ty -= this.minHt * scale + 4;
                   if (screenHeight > 1000) { // ipad
-                    ty = nom + 4;
+                    ty = (screenHeight - this.minHt) / nomRat + 15 * nomRat;
+                    if (screenHeight > 1024) {
+                      ty = screenHeight / nomRat + this.minHt + 10 * nomRat;
+                    }
                   }
                 }
-                // ty = - (this.minHt - ( nom - scheight + cheight) - 4); // this 4...
-                this.minxlat = ty - cheight + this.minHt + 4 + 2; // a new mystery number...
-                this.maxxlat = ty;
               } else {
                 // android bottom
-                ty = cheight;
-                this.maxxlat = ty;
-                this.minxlat = this.maxxlat - cheight + this.minHt + 4; // pad?
+                ty = cheight - this.minHt;
+                if (screenHeight > 520) {
+                  ty = scheight - this.minHt * scale;
+                }
+                if (screenHeight > 800) { // large screens
+                  ty = 650;
+                  // ty += currentY * scale;
+                  if (screenHeight > 1040) { // xlarge screen
+                    ty = screenHeight - cheight + this.minHt;
+                  }
+                }
               }
+              this.maxxlat = ty;
+              this.minxlat = ty - cheight + this.minHt + 4 + 2; // a new mystery number...
             } else {
               // top...
               if (this.ios) {
@@ -104,7 +116,16 @@ export class CommonContents extends StackLayout {
                 this.maxxlat = ty + cheight - this.minHt - 4; // mystery 4 again
               } else {
                 // android top
-                ty = -cheight;
+                ty = this.minHt - cheight - 4;
+                if (screenHeight > 520) {
+                  ty -= currentY + this.minHt + 8;
+                }
+                if (screenHeight > 800) { // large screens
+                  ty -= currentY * scale;
+                  if (screenHeight > 1040) { // xlarge screen
+                    ty -= screenHeight - scheight + this.minHt + 8;
+                    }
+                }
                 this.minxlat = ty;
                 this.maxxlat = this.minxlat + cheight - this.minHt - 4; // is the 4 padding or what?
               }
@@ -122,6 +143,7 @@ export class CommonContents extends StackLayout {
       }
     });
     this.on('loaded', (eventData: EventData) => {
+      console.log('--onloaded event')
       this._isLoaded = true;
       ///
       // todo: replace this multiline thing with a stacklayout with icon and label
@@ -148,6 +170,7 @@ export class CommonContents extends StackLayout {
         pullLabel.textAlignment = 'center';
         pullLabel.paddingTop = 0;
       }
+      console.log('adding handle parts')
       let t;
       if (this.anchor === 'bottom') {
         this.insertChild(this.pullLabel, 0);
@@ -169,8 +192,10 @@ export class CommonContents extends StackLayout {
       return true;
     });
     this.minHt = this.pullHandle.getMeasuredHeight() / scale;
+    console.log('pullhandle height = ' + this.minHt);
     if (this.pullLabel) {
       this.minHt += this.pullLabel.getMeasuredHeight() / scale;
+      console.log('computed full handle height = ' + this.minHt);
     }
     return totalHeight;
   }
