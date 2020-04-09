@@ -1,0 +1,29 @@
+
+pwd=`pwd`
+
+function spawn() {
+ dev = $2
+if [ "$1" == "ios" ]; then
+	if [ "$2" == "small" ]; then
+		dev = "8DD5052B-614D-4C4B-A624-676A2B311026" # iphone 8
+	fi
+	if [ "$2" == "medium" ]; then
+		dev="AAC1A2CF-4E50-41E4-9FF6-008D8AF2C0F5" # iphone 11
+	fi
+	if [ "$2" == "large" ]; then
+		dev="869DBBD1-E3F5-47A5-9E61-9C00815EC244" # ipad pro 9.7"
+	fi
+	if [ "$2" == "xlarge" ]; then
+		dev="66520F23-8DE1-46D9-B39F-EB728EF87AEE" # ipad air 12.9" (gen 4)
+	fi
+fi
+    cmd="cd ${pwd} && tns run $1 --device=$dev"
+    osascript -e  "tell application \"Terminal\" to do script \"$cmd\""
+}
+
+
+spawn $1 "small"
+spawn $1 "medium"
+spawn $1 "large"
+spawn $1 "xlarge"
+

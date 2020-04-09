@@ -1,22 +1,36 @@
 import { PullReveal } from 'nativescript-pull-reveal';
 import { EventData } from 'tns-core-modules/data/observable';
+import { Page, NavigatedData } from 'tns-core-modules/ui/page'
 
-/*
-In NativeScript, a file with the same name as an XML file is known as
-a code-behind file. The code-behind is a great place to place your view
-logic, and to set up your page’s data binding.
-*/
 
-import { NavigatedData, Page } from "tns-core-modules/ui/page";
-
-let pullDrawer;
+let page;
 
 export function onNavigatingTo(args: NavigatedData) {
-    const page = <Page>args.object;
-    pullDrawer = page.getViewById('pullDrawer')
+   page = <Page>args.object;
 }
 
-export function closeDrawer (args:EventData) {
-    console.log('close drawer');
-    pullDrawer.close(3000);
+export function onNested1 (args: EventData) {
+    console.log('Nested 1');
+    page.frame.navigate('examples/nested/1-page')
+}
+export function onNested2 (args: EventData) {
+    console.log('Nested 2');
+    page.frame.navigate('examples/nested/2-page')
+}
+export function onNested3 (args: EventData) {
+    console.log('Nested 3');
+    page.frame.navigate('examples/nested/3-page')
+}
+
+export function onFull1 (args: EventData) {
+    console.log('Full 1');
+    page.frame.navigate('examples/full/1-page')
+}
+export function onFull2 (args: EventData) {
+    console.log('Full 2');
+    page.frame.navigate('examples/full/2-page')
+}
+export function onFull3 (args: EventData) {
+    console.log('Full 3');
+    page.frame.navigate('examples/full/3-page')
 }

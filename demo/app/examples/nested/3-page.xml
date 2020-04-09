@@ -1,0 +1,29 @@
+<Page
+        navigatingTo="onNavigatingTo"
+        xmlns="http://schemas.nativescript.org/tns.xsd"
+        xmlns:pr="nativescript-pull-reveal"
+>
+
+    <ActionBar>
+        <Label text="Bottom left corner"></Label>
+    </ActionBar>
+
+    <GridLayout columns="50, auto, *" rows="50, auto, *" width="210" height="210" backgroundColor="lightgray" >
+        <Label text="Corner" row="0" col="0" backgroundColor="red" tap="onTopLeft"/>
+        <Label text="Top" row="0" col="1" colSpan="2" backgroundColor="green" tap ="onTop"/>
+        <Label text="Left" row="1" col="0" rowSpan="2" backgroundColor="blue" tap="onLeft"/>
+        <pr:PullRevealPage id="wrapper" row="1" col="1" backgroundColor="yellow" tap="onReset">
+            <pr:PullReveal id="body" anchor="bottomLeft" >
+                <Label text="Hello there I am four"/>
+                <Label text="Hello there I am 4.1"/>
+                <Label text="Hello there I am 4.2"/>
+                <Label text="Hello there I am 4.3"/>
+                <Label text="Hello there I am 4.4"/>
+            </pr:PullReveal>
+        </pr:PullRevealPage>
+        <Label text="Right" row="1" col="2" backgroundColor="orange" tap="onRight"/>
+        <Label text="Bottom" row="2" col="1" backgroundColor="pink" tap="onBottom"/>
+        <Label text="Corner" row="2" col="2" backgroundColor="purple" tap="onBottomRight"/>
+    </GridLayout>
+
+</Page>

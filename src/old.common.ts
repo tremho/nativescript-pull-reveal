@@ -24,15 +24,6 @@ export class CommonContents extends StackLayout {
   // this is the drawer itself, and it belongs to its wrapper parent.
   private _isLoaded: boolean;
   private _didLayout: boolean;
-  private wpwidth: number;
-  private wpheight: number;
-  private pwidth: number;
-  private pheight: number;
-  private hwidth: number;
-  private hheight: number;
-  private minylat: number;
-  private maxylat: number;
-  private ylat: number = 0;
   private minxlat: number;
   private maxxlat: number;
   private xlat: number = 0;
@@ -47,9 +38,9 @@ export class CommonContents extends StackLayout {
   constructor() {
     super();
     // todo: review
+    this.width = PercentLength.parse('100%');
     this.paddingBottom = 0;
     this.paddingTop = 0;
-
 
     this.anchor = this.get('anchor') || 'bottom';
     this.label = this.get('label') || '';
@@ -61,103 +52,141 @@ export class CommonContents extends StackLayout {
           this._didLayout = true;
           setTimeout(() => {
             // get the measurements we need
-            const wrapper = this.parent as GridLayout
-            this.wpheight = wrapper.getMeasuredHeight() / scale;
-            this.wpwidth = wrapper.getMeasuredWidth() / scale;
-
-            this.width = this.wpwidth;
-
+            const nom = 667;
             let mheight = this.getMeasuredHeight();
-            let cheight = this.computeHeight(this);
-            let cwcheight = this.computeHeight(wrapper) - cheight;
+            let cheight  = this.computeHeight();
             let scheight = mheight / scale;
+            const pheight = Number(this.height) || 0;
             const screenHeight = screen.mainScreen.heightDIPs;
-
+            const nomRat = screenHeight / nom;
             const currentY = this.getLocationOnScreen().y;
             console.log('screenHeight is ' + screenHeight);
             console.log('currentY is ' + currentY);
             console.log('mheight is ' + mheight);
             console.log('cheight is ' + cheight);
-            console.log('cwcheight is ' + cwcheight);
             console.log('scheight is ' + scheight);
+            console.log('pheight is ' + pheight);
             console.log('scale is ' + scale);
             console.log('minHt is ' + this.minHt);
-            this.pheight = this.getMeasuredHeight() / scale;
-            this.pwidth = this.getMeasuredWidth() / scale;
-            console.log(`Wrapper Pixel width and height ${this.wpwidth} x ${this.wpheight}`);
-            console.log(`Content Pixel width and height ${this.pwidth} x ${this.pheight}`);
-            this.hwidth = this.hheight = Number(this.get('exposed'))  || 8;
-            console.log(`Handle width and height ${this.hwidth} x ${this.hheight}`);
-
-            let diff = (this.pheight - cwcheight) / 2;
-            if (cwcheight !== this.wpheight && this.anchor === 'top') {
-              diff = 0;
-            }
-            if (cwcheight > this.wpheight) {
-              diff = 0;
-            }
-            console.log('height diff is ' + diff);
-
-            this.height = this.pheight;
 
 
-            let ty = 0;
-            let tx = 0;
+            let ty;
             console.log('anchor is ' + this.anchor);
             if (this.anchor === 'bottom') {
-              ty = this.pheight - this.hheight - diff;
-              this.maxylat = ty;
-              this.minylat = ty - cheight + this.hheight;
-              this.minxlat = this.maxxlat = 0;
-            } else if (this.anchor === 'top') {
-              ty = this.hheight - this.pheight + diff;
-              this.minylat = ty;
-              this.maxylat = diff;
-              this.minxlat = this.maxxlat = 0;
-            } else if (this.anchor === 'left') {
-              tx = this.hwidth - this.pwidth;
-              this.minxlat = tx;
-              this.maxxlat = 0;
-              this.minylat = this.maxylat = 0;
-            } else if (this.anchor === 'right') {
-              tx = this.pwidth - this.hwidth;
-              this.maxxlat = tx;
-              this.minxlat = 0;
-              this.minylat = this.maxylat = 0;
-            } else if (this.anchor === 'topLeft') {
-              ty = this.hheight - this.pheight;
-              this.minylat = ty;
-              this.maxylat = 0;
-              tx = this.hwidth - this.pwidth;
-              this.minxlat = tx;
-              this.maxxlat = 0;
-            } else if (this.anchor === 'topRight') {
-              ty = this.hheight - this.pheight;
-              this.minylat = ty;
-              this.maxylat = 0;
-              tx = this.pwidth - this.hwidth;
-              this.maxxlat = tx;
-              this.minxlat = 0;
-            } else if (this.anchor === 'bottomLeft') {
-              ty = this.pheight - this.hheight;
-              this.maxylat = ty;
-              this.minylat = 0;
-              tx = this.hwidth - this.pwidth;
-              this.minxlat = tx;
-              this.maxxlat = 0;
-            } else if (this.anchor === 'bottomRight') {
-              ty = this.pheight - this.hheight;
-              this.maxylat = ty;
-              this.minylat = 0;
-              tx = this.pwidth - this.hwidth;
-              this.maxxlat = tx;
-              this.minxlat = 0;
+              if (this.ios) {
+                ty = (screenHeight - currentY) / scale + 4; // all sizes
+                // ty += this.minHt * scale;
+
+                if (cheight === this.minHt) {
+                  // no actual content
+                  ty -= this.minHt / scale - 4;
+                }
+                const sstp = cheight / 80;
+                console.log(sstp)
+                if (sstp < 0.67) {
+                  const r = 0.75 * sstp;
+                  ty -= this.minHt * r;
+                } else if (sstp < 1) {
+                  // no action
+                } else if (sstp < 1.1) {
+                  const r = 0.025 * sstp;
+                  ty -= this.minHt * r;
+                } else if (sstp < 1.5) {
+                  const r = 0.33 * sstp;
+                  ty += this.minHt * r;
+                } else if (sstp < 1.8) {
+                  const r = 0.6 * sstp;
+                  ty += this.minHt * r;
+                } else if (sstp < 2.3) {
+                  const r = 0.7 * sstp;
+                  ty += this.minHt * r;
+                } else if (sstp < 2.9) {
+                  const r = 0.8 * sstp;
+                  ty += this.minHt * r;
+                } else if (sstp < 3.5) {
+                  const r = 0.95 * sstp;
+                  ty += this.minHt * r;
+                } else if (sstp < 4) {
+                  const r = 1.0 * sstp;
+                  ty += this.minHt * r;
+                } else if (sstp < 5.2) {
+                  const r = 1.05 * sstp;
+                  ty += this.minHt * r;
+                } else if (sstp < 5.4) {
+                  const r = 1.075 * sstp;
+                  ty += this.minHt * r;
+                } else if (sstp < 9) {
+                  const r = 1.1 * sstp;
+                  ty += this.minHt * r;
+                } else {
+
+                }
+                if (cheight < 160) {
+                  const df = 160 - cheight;
+                }
+                ty -= this.minHt + 4;
+                if ( screenHeight <= 667 ) {
+                  ty += 4;
+                }
+                if (screenHeight > 667 && screenHeight < 820)  {
+                  if (cheight < 40) {
+                    ty += cheight * 4;
+                  }
+                  else if (cheight < 67) {
+                    ty += cheight * 1.9;
+                  }
+                  else if (cheight < 85) {
+                    ty += cheight * 1.6;
+                  } else if (cheight < 105) {
+                    ty += cheight = 1.5;
+                  }
+                }
+              } else {
+                // android bottom
+                ty = (screenHeight - currentY ) / scale +  cheight / scale - this.minHt - 4; // all sizes
+              }
+              this.maxxlat = ty;
+              this.minxlat = ty - cheight + this.minHt + 4 + 2; // a new mystery number...
+            } else {
+              // top...
+              ty = - screenHeight / scale - 4;
+              if (this.ios) {
+                if (screenHeight > 800 && screenHeight < 1000) {
+                    ty = -cheight * scale + this.minHt + 8;
+                }
+              } else {
+                // android top
+                ty = - cheight - currentY - 4;
+                const df = cheight - currentY;
+                ty +=  df / scale;
+
+                if (screenHeight > 480) {
+                  let rt = 1.333333;
+                  if (screenHeight >= 960) {
+                    rt = 1.714;
+                  }
+                  if (screenHeight >= 1192) {
+                    rt = 1.90;
+                  }
+                  const scdf = screenHeight - 480;
+                  ty -= scdf / rt;
+                }
+              }
+              this.minxlat = ty;
+              this.maxxlat = this.minxlat + cheight - this.minHt - 4; // is the 4 padding or what?
             }
+            console.log('------');
             console.log('ty is ' + ty);
-            this.xlat = tx;
-            this.ylat = ty;
-            this.translateY = ty;
-            this.translateX = tx;
+            console.log('minxlat is ' + this.minxlat);
+            console.log('maxxlat is ' + this.maxxlat);
+            console.log('minHt is ' + this.minHt);
+            console.log('heightDIPs', screen.mainScreen.heightDIPs);
+            console.log('heightPix', screen.mainScreen.heightPixels);
+            console.log('eff scale', screen.mainScreen.heightPixels / screenHeight);
+
+            this.xlat = ty;
+            this.height = cheight;
+            this.translateY = this.xlat;
           });
         }
       }
@@ -190,8 +219,8 @@ export class CommonContents extends StackLayout {
         pullLabel.textAlignment = 'center';
         pullLabel.paddingTop = 0;
       }
-      // console.log('adding handle parts')
-      // let t;
+      console.log('adding handle parts')
+      let t;
       // if (this.anchor === 'bottom') {
       //   this.insertChild(this.pullLabel, 0);
       //   if (labelText) this.insertChild(this.pullHandle, 0);
@@ -204,19 +233,19 @@ export class CommonContents extends StackLayout {
     this.on(GestureTypes.pan, args => { this.onPan(args as PanGestureEventData); });
   }
 
-  computeHeight ( view ) {
+  computeHeight () {
     let totalHeight = 0;
-    view.eachChildView(child  => {
+    this.eachChildView(child  => {
       const h = child.getMeasuredHeight() / scale;
       totalHeight += h;
       return true;
     });
-    // this.minHt = this.pullHandle.getMeasuredHeight() / scale;
-    // console.log('pullhandle height = ' + this.minHt);
-    // if (this.pullLabel) {
-    //   this.minHt += this.pullLabel.getMeasuredHeight() / scale;
-    //   console.log('computed full handle height = ' + this.minHt);
-    // }
+    this.minHt = this.pullHandle.getMeasuredHeight() / scale;
+    console.log('pullhandle height = ' + this.minHt);
+    if (this.pullLabel) {
+      this.minHt += this.pullLabel.getMeasuredHeight() / scale;
+      console.log('computed full handle height = ' + this.minHt);
+    }
     return totalHeight;
   }
 
@@ -226,32 +255,31 @@ export class CommonContents extends StackLayout {
    */
   onPan (args: PanGestureEventData): void {
 
-    // if (this.anchor === 'topLeft') {
-    //   this.minylat = this.xlat;
-    //   this.minxlat = this.ylat;
-    // }
-
     const change = args.deltaY;
 
-    if (args.state === GestureStateTypes.changed) {
-      const xchange = args.deltaX / this.dragspeed;
-      const ychange = args.deltaY / this.dragspeed;
-      this.xlat += xchange;
-      this.ylat += ychange;
+    if (this.anchor === 'bottom') {
+      if (args.state === GestureStateTypes.changed) {
+        const change = args.deltaY / this.dragspeed;
+        this.xlat += change;
+        if (this.xlat < this.minxlat) {
+          this.xlat = this.minxlat;
+        } else if (this.xlat > this.maxxlat) {
+          this.xlat = this.maxxlat;
+        }
+        this.translateY = this.xlat;
+      }
+    } else {
+      // top
+      const change = args.deltaY / this.dragspeed;
+      this.xlat += change;
       if (this.xlat < this.minxlat) {
         this.xlat = this.minxlat;
       } else if (this.xlat > this.maxxlat) {
         this.xlat = this.maxxlat;
       }
-      if (this.ylat < this.minylat) {
-        this.ylat = this.minylat;
-      } else if (this.ylat > this.maxylat) {
-        this.ylat = this.maxylat;
-      }
-      this.translateX = this.xlat;
-      this.translateY = this.ylat;
-      console.log(`moved ${xchange}, ${ychange}. xlat is ${this.xlat} ylat is ${this.ylat} height is ${this.height} ${this.minylat}, ${this.maxylat}`);
+      this.translateY = this.xlat;
     }
+    console.log(`moved ${change}. xlat is ${this.xlat} height is ${this.height} ${this.minxlat}, ${this.maxxlat}`);
   }
 
   /**
@@ -261,15 +289,15 @@ export class CommonContents extends StackLayout {
    *
    */
   public open (animTime: number): void  {
-    let step = (this.maxylat - this.minylat) / animTime;
+    let step = (this.maxxlat - this.minxlat) / animTime;
     const start = Date.now();
     let ty = this.translateY;
     let limit;
     if (this.anchor === 'bottom') {
       step = -step;
-      limit = this.minylat;
+      limit = this.minxlat;
     } else {
-      limit = this.maxylat;
+      limit = this.maxxlat;
     }
     console.log('opening....');
 
@@ -281,8 +309,8 @@ export class CommonContents extends StackLayout {
     const cycle = () => {
       const tm = Date.now() - start;
       ty += step * tm;
-      if (ty < this.minylat) ty = this.minylat;
-      if (ty > this.maxylat) ty = this.maxylat;
+      if (ty < this.minxlat) ty = this.minxlat;
+      if (ty > this.maxxlat) ty = this.maxxlat;
       this.translateY = ty;
       if (ty !== limit) {
         setTimeout(cycle);
@@ -298,15 +326,15 @@ export class CommonContents extends StackLayout {
    *
    */
   public close (animTime: number): void {
-    let step = (this.minylat - this.maxylat) / animTime;
+    let step = (this.minxlat - this.maxxlat) / animTime;
     const start = Date.now();
     let ty = this.translateY;
     let limit;
     if (this.anchor === 'bottom') {
       step = -step;
-      limit = this.maxylat;
+      limit = this.maxxlat;
     } else {
-      limit = this.minylat;
+      limit = this.minxlat;
     }
     console.log('closing....');
 
@@ -318,8 +346,8 @@ export class CommonContents extends StackLayout {
     const cycle = () => {
       const tm = Date.now() - start;
       ty += step * tm;
-      if (ty < this.minylat) ty = this.minylat;
-      if (ty > this.maxylat) ty = this.maxylat;
+      if (ty < this.minxlat) ty = this.minxlat;
+      if (ty > this.maxxlat) ty = this.maxxlat;
       this.translateY = ty;
       if (ty !== limit) {
         setTimeout(cycle);
