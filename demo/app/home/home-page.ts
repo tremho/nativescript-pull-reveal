@@ -1,4 +1,3 @@
-import { PullReveal } from 'nativescript-pull-reveal';
 import { EventData } from 'tns-core-modules/data/observable';
 import { Page, NavigatedData } from 'tns-core-modules/ui/page'
 

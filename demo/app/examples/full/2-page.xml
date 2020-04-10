@@ -8,13 +8,13 @@
         <Label text="Full Page 1"></Label>
     </ActionBar>
 
-    <pr:PullRevealPage> <!-- grid wrapper -->
+    <pr:PullRevealContext> <!-- grid wrapper -->
         <StackLayout> <!-- user content -->
             <Image src="~/images/happyface.png"/>
             <Label text="Here is some content"/>
         </StackLayout>
 
-        <pr:PullReveal id="pullDrawer" anchor='bottom' label="This is an example" backgroundColor="black" color="whitesmoke" >
+        <pr:PullRevealDrawer anchor='bottom' label="This is an example" backgroundColor="black" color="whitesmoke" >
             <Label text="Item 1"/>
             <Label text="Item 2"/>
             <Label text="Item 3"/>
@@ -41,7 +41,7 @@
             <!--            <Label text="Item 18"/>-->
             <!--            <Label text="Item 19"/>-->
             <!--            <Label text="Item 20"/>-->
-        </pr:PullReveal>
-    </pr:PullRevealPage>
+        </pr:PullRevealDrawer>
+    </pr:PullRevealContext>
 
 </Page>

@@ -12,12 +12,12 @@
         <Label row="0" col="0" backgroundColor="red" tap="onTopLeft"/>
         <Label row="0" col="1" colSpan="2" backgroundColor="green" tap ="onTop"/>
         <Label row="1" col="0" rowSpan="2" backgroundColor="blue" tap="onLeft"/>
-        <pr:PullRevealPage id="wrapper" row="1" col="1" backgroundColor="white" tap="onReset">
+        <pr:PullRevealContext id="wrapper" row="1" col="1" backgroundColor="white" tap="onReset">
             <StackLayout>
                 <Image src="~/images/happyface.png" width="100" height="100"/>
                 <Label text="Have a nice day"/>
             </StackLayout>
-            <pr:PullReveal id="body" anchor="bottom" backgroundColor="black" color="white">
+            <pr:PullRevealDrawer id="body" anchor="bottom" backgroundColor="black" color="white">
                 <Label text="Drawer Item 1"/>
                 <Label text="Drawer Item 2"/>
                 <Label text="Drawer Item 3"/>
@@ -28,8 +28,8 @@
 <!--                <Label text="Drawer Item 8"/>-->
 <!--                <Label text="Drawer Item 9"/>-->
 <!--                <Label text="Drawer Item 10"/>-->
-            </pr:PullReveal>
-        </pr:PullRevealPage>
+            </pr:PullRevealDrawer>
+        </pr:PullRevealContext>
         <Label row="1" col="2" backgroundColor="orange" tap="onRight"/>
         <Label row="2" col="1" backgroundColor="pink" tap="onBottom"/>
         <Label row="2" col="2" backgroundColor="purple" tap="onBottomRight"/>

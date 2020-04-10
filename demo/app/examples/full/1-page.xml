@@ -8,12 +8,12 @@
         <Label text="Full Page 1"/>
     </ActionBar>
 
-    <pr:PullRevealPage id="wrapper" backgroundColor="yellow" tap="onReset">
+    <pr:PullRevealContext backgroundColor="yellow" tap="onReset">
         <StackLayout> <!-- user content -->
             <Image src="~/images/happyface.png"/>
             <Label text="Here is some content"/>
         </StackLayout>
-        <pr:PullReveal id="body" backgroundColor="black" color="white" anchor="bottomRight" exposed="20">
+        <pr:PullRevealDrawer backgroundColor="black" color="white" anchor="bottomRight" exposed="20">
             <Label text="Item 1"/>
             <Label text="Item 2"/>
             <Label text="Item 3"/>
@@ -24,18 +24,7 @@
             <Label text="Item 8"/>
             <Label text="Item 9"/>
             <Label text="Item 10"/>
-        </pr:PullReveal>
-    </pr:PullRevealPage>
+        </pr:PullRevealDrawer>
+    </pr:PullRevealContext>
 
 </Page>
-<!--        <StackLayout> &lt;!&ndash; user content &ndash;&gt;-->
-<!--            <Image src="~/images/happyface.png"/>-->
-<!--            <Label text="Here is some content"/>-->
-<!--        </StackLayout>-->
-
-            <!--            <flexbox-layout >-->
-            <!--                <Button text="tap to close" tap="closeDrawer" fontSize="12"/>-->
-            <!--                <Label text = "Have a nice day"/>-->
-            <!--                <Label width="20"/>-->
-            <!--                <Image src="~/images/happyface.png" width="20" height="20" />-->
-            <!--            </flexbox-layout>-->
