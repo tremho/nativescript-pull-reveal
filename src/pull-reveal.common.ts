@@ -61,7 +61,7 @@ export class CommonContents extends StackLayout {
           this._didLayout = true;
           setTimeout(() => {
             // get the measurements we need
-            const wrapper = this.parent as GridLayout
+            const wrapper = this.parent as GridLayout;
             this.wpheight = wrapper.getMeasuredHeight() / scale;
             this.wpwidth = wrapper.getMeasuredWidth() / scale;
 
@@ -163,7 +163,7 @@ export class CommonContents extends StackLayout {
       }
     });
     this.on('loaded', (eventData: EventData) => {
-      console.log('--onloaded event')
+      console.log('--onloaded event');
       this._isLoaded = true;
       ///
       // todo: replace this multiline thing with a stacklayout with icon and label
