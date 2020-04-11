@@ -64,7 +64,7 @@ export class CommonContents extends StackLayout {
           setTimeout(() => {
             this.calcExtents();
             this.enforceExtents();
-            // this.close();
+            this.close();
             this.translateY = this.ylat = this.maxylat;
           });
         }
@@ -103,6 +103,7 @@ export class CommonContents extends StackLayout {
       this.ylat += ychange;
       this.enforceExtents();
     }
+    // console.log(`@ ${this.xlat}, ${this.ylat} of ${this.minxlat}, ${this.minylat} to ${this.maxxlat}, ${this.maxylat}`);
   }
   public recalcExtents() {
     this.calcExtents();
@@ -288,8 +289,12 @@ export class CommonContents extends StackLayout {
     }
 
     if (!animTime) {
-      this.translateY = this.ylat = limity;
-      this.translateX = this.xlat = limitx;
+      // console.log(`minx ${this.minxlat} miny ${this.minylat}, maxx ${this.maxxlat} maxy ${this.maxylat}`)
+      // console.log(`closing ${this.anchor} at ${limitx}, ${limity}`);
+      setTimeout(() => {
+        this.translateY = this.ylat = limity;
+        this.translateX = this.xlat = limitx;
+      })
       return;
     }
 
@@ -302,6 +307,7 @@ export class CommonContents extends StackLayout {
       tx += stepx * tm;
       if (tx < this.minxlat) tx = this.minxlat;
       if (tx > this.maxxlat) tx = this.maxxlat;
+      this.translateX = tx;
       if (ty !== limity && tx !== limitx) {
         setTimeout(cycle);
       }
