@@ -15,3 +15,21 @@ This is where the vast majority of your CSS code goes. */
     font-style: italic;
     font-size: 10;
 }
+
+.drawer-plain {
+    background-color: black;
+    color: white;
+}
+.drawer-wooden {
+    background-image: url("~/images/wooden.png");
+    padding: 20;
+    color: darkblue;
+}
+.drawer-metal {
+    background-image: url("~/images/metal.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 10;
+    color: darkred;
+
+}

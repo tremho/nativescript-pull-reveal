@@ -14,6 +14,7 @@
   "dependencies": {
     "@nativescript/theme": "~2.3.3",
     "nativescript-pull-reveal": "file:../src",
+    "nativescript-ui-dataform": "^6.0.0",
     "tns-core-modules": "~6.5.0"
   },
   "devDependencies": {

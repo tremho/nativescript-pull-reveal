@@ -15,31 +15,31 @@ PullRevealContext, and from PullReveal to PullRevealDrawer.
     - change via properties, objects
     - change via CSS class name change
     
-- [ ] III. have drawer images for demo
-    - for each anchor point
+- [X] III. have drawer images for demo
+    - for each ~~anchor point~~ style 
     
-- [ ] IV. Happy face with drawer containing controls
+- [X] IV. Full Demo:
+    __Happy face with drawer containing controls__
     - set anchor
     - set exposed 
-    - close drawer (function test)
+    - add items to drawer
+    - ~~close drawer (function test)~~
     - change style (demo css)
     - change picture (demo sizes)    
     
-- [ ] V. nested demo
+- [ ] V. nested demo with multiple drawers
     - bottom
     - right
     - topLeft
-    
-- [ ] VI. full demo
-    - bottom
-    - top
-    - bottomRight    
-    
-- [ ] VII. auto open demo
+        
+- [ ] VI. auto open and close demo
     - Since we don't have this in the drawer
-    - full page demo with button to open.
+    - nested page demo with button to open.
+    - and one to close (could be in the drawer)
+    - put a slider in drawer to adjust open/close time.
+        - 0 - 5 seconds
                
-- [ ] VIII. prep and publish
+- [ ] VII. prep and publish
     - [ ] documentation
     - [ ] update version to 1.1.0
     - [ ] publish to npm

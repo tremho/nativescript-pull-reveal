@@ -38,7 +38,8 @@ export class CommonContents extends StackLayout {
   private xlat: number = 0;
   private minHt: number = 0;
   private dragspeed: number = 5;
-  private anchor: string;
+  private _anchor: string;
+  private _exposed: number;
   private label: string;
   // private grabArea: StackLayout; // not using a container due to bug
   private pullLabel: Label;
@@ -51,154 +52,27 @@ export class CommonContents extends StackLayout {
     this.paddingTop = 0;
 
 
-    this.anchor = this.get('anchor') || 'bottom';
+    this._anchor = this.get('anchor') || 'bottom';
     this.label = this.get('label') || '';
 
     this.on('layoutChanged', (eventData: EventData) => {
+      // console.log('LAYOUT CHANGED');
       const lbl = eventData.object as CommonContents;
       if (this._isLoaded) {
         if (!this._didLayout) {
           this._didLayout = true;
           setTimeout(() => {
-            // get the measurements we need
-            const wrapper = this.parent as GridLayout;
-            this.wpheight = wrapper.getMeasuredHeight() / scale;
-            this.wpwidth = wrapper.getMeasuredWidth() / scale;
-
-            this.width = this.wpwidth;
-
-            let mheight = this.getMeasuredHeight();
-            let cheight = this.computeHeight(this);
-            let cwcheight = this.computeHeight(wrapper) - cheight;
-            let scheight = mheight / scale;
-            const screenHeight = screen.mainScreen.heightDIPs;
-
-            const currentY = this.getLocationOnScreen().y;
-            console.log('screenHeight is ' + screenHeight);
-            console.log('currentY is ' + currentY);
-            console.log('mheight is ' + mheight);
-            console.log('cheight is ' + cheight);
-            console.log('cwcheight is ' + cwcheight);
-            console.log('scheight is ' + scheight);
-            console.log('scale is ' + scale);
-            console.log('minHt is ' + this.minHt);
-            this.pheight = this.getMeasuredHeight() / scale;
-            this.pwidth = this.getMeasuredWidth() / scale;
-            console.log(`Wrapper Pixel width and height ${this.wpwidth} x ${this.wpheight}`);
-            console.log(`Content Pixel width and height ${this.pwidth} x ${this.pheight}`);
-            this.hwidth = this.hheight = Number(this.get('exposed'))  || 8;
-            console.log(`Handle width and height ${this.hwidth} x ${this.hheight}`);
-
-            let diff = (this.pheight - cwcheight) / 2;
-            if (cwcheight !== this.wpheight && this.anchor === 'top') {
-              diff = 0;
-            }
-            if (cwcheight > this.wpheight) {
-              diff = 0;
-            }
-            console.log('height diff is ' + diff);
-
-            this.height = this.pheight;
-
-
-            let ty = 0;
-            let tx = 0;
-            console.log('anchor is ' + this.anchor);
-            if (this.anchor === 'bottom') {
-              ty = this.pheight - this.hheight - diff;
-              this.maxylat = ty;
-              this.minylat = ty - cheight + this.hheight;
-              this.minxlat = this.maxxlat = 0;
-            } else if (this.anchor === 'top') {
-              ty = this.hheight - this.pheight + diff;
-              this.minylat = ty;
-              this.maxylat = diff;
-              this.minxlat = this.maxxlat = 0;
-            } else if (this.anchor === 'left') {
-              tx = this.hwidth - this.pwidth;
-              this.minxlat = tx;
-              this.maxxlat = 0;
-              this.minylat = this.maxylat = 0;
-            } else if (this.anchor === 'right') {
-              tx = this.pwidth - this.hwidth;
-              this.maxxlat = tx;
-              this.minxlat = 0;
-              this.minylat = this.maxylat = 0;
-            } else if (this.anchor === 'topLeft') {
-              ty = this.hheight - this.pheight;
-              this.minylat = ty;
-              this.maxylat = 0;
-              tx = this.hwidth - this.pwidth;
-              this.minxlat = tx;
-              this.maxxlat = 0;
-            } else if (this.anchor === 'topRight') {
-              ty = this.hheight - this.pheight;
-              this.minylat = ty;
-              this.maxylat = 0;
-              tx = this.pwidth - this.hwidth;
-              this.maxxlat = tx;
-              this.minxlat = 0;
-            } else if (this.anchor === 'bottomLeft') {
-              ty = this.pheight - this.hheight;
-              this.maxylat = ty;
-              this.minylat = 0;
-              tx = this.hwidth - this.pwidth;
-              this.minxlat = tx;
-              this.maxxlat = 0;
-            } else if (this.anchor === 'bottomRight') {
-              ty = this.pheight - this.hheight;
-              this.maxylat = ty;
-              this.minylat = 0;
-              tx = this.pwidth - this.hwidth;
-              this.maxxlat = tx;
-              this.minxlat = 0;
-            }
-            console.log('ty is ' + ty);
-            this.xlat = tx;
-            this.ylat = ty;
-            this.translateY = ty;
-            this.translateX = tx;
+            this.calcExtents();
+            this.enforceExtents();
+            // this.close();
+            this.translateY = this.ylat = this.maxylat;
           });
         }
       }
     });
     this.on('loaded', (eventData: EventData) => {
-      console.log('--onloaded event');
+      // console.log('--onloaded event');
       this._isLoaded = true;
-      ///
-      // todo: replace this multiline thing with a stacklayout with icon and label
-      ///
-      // todo: file a bug report with Nativescript core.
-      //        IOS nested container bug prevents us from doing this there
-      //       and pretty much prohibits any meaningful user content layout schemes also.
-      ///
-      const labelText = this.label;
-      const handle = new Label();
-      handle.className = 'pull-reveal-handle';
-      this.pullHandle = handle;
-      handle.text = '\u21D5\u21D5';
-      handle.textAlignment = 'center';
-      handle.paddingTop = handle.paddingBottom = handle.marginBottom = handle.marginTop = 0;
-      if (labelText) {
-        const pullLabel = new Label();
-        pullLabel.className = 'pull-reveal-label';
-        pullLabel.text = labelText;
-        this.pullLabel = pullLabel;
-        pullLabel.marginBottom = 0;
-        pullLabel.paddingBottom = 0;
-        pullLabel.textWrap = true;
-        pullLabel.textAlignment = 'center';
-        pullLabel.paddingTop = 0;
-      }
-      // console.log('adding handle parts')
-      // let t;
-      // if (this.anchor === 'bottom') {
-      //   this.insertChild(this.pullLabel, 0);
-      //   if (labelText) this.insertChild(this.pullHandle, 0);
-      // } else {
-      //   if (labelText) this.addChild(this.pullLabel);
-      //   this.addChild(this.pullHandle);
-      // }
     });
 
     this.on(GestureTypes.pan, args => { this.onPan(args as PanGestureEventData); });
@@ -211,12 +85,6 @@ export class CommonContents extends StackLayout {
       totalHeight += h;
       return true;
     });
-    // this.minHt = this.pullHandle.getMeasuredHeight() / scale;
-    // console.log('pullhandle height = ' + this.minHt);
-    // if (this.pullLabel) {
-    //   this.minHt += this.pullLabel.getMeasuredHeight() / scale;
-    //   console.log('computed full handle height = ' + this.minHt);
-    // }
     return totalHeight;
   }
 
@@ -226,11 +94,6 @@ export class CommonContents extends StackLayout {
    */
   onPan (args: PanGestureEventData): void {
 
-    // if (this.anchor === 'topLeft') {
-    //   this.minylat = this.xlat;
-    //   this.minxlat = this.ylat;
-    // }
-
     const change = args.deltaY;
 
     if (args.state === GestureStateTypes.changed) {
@@ -238,20 +101,126 @@ export class CommonContents extends StackLayout {
       const ychange = args.deltaY / this.dragspeed;
       this.xlat += xchange;
       this.ylat += ychange;
-      if (this.xlat < this.minxlat) {
-        this.xlat = this.minxlat;
-      } else if (this.xlat > this.maxxlat) {
-        this.xlat = this.maxxlat;
-      }
-      if (this.ylat < this.minylat) {
-        this.ylat = this.minylat;
-      } else if (this.ylat > this.maxylat) {
-        this.ylat = this.maxylat;
-      }
-      this.translateX = this.xlat;
-      this.translateY = this.ylat;
-      console.log(`moved ${xchange}, ${ychange}. xlat is ${this.xlat} ylat is ${this.ylat} height is ${this.height} ${this.minylat}, ${this.maxylat}`);
+      this.enforceExtents();
     }
+  }
+  public recalcExtents() {
+    this.calcExtents();
+    if (this._anchor === 'bottom') {
+      this.translateY = this.ylat = this.minylat;
+    }
+    this.enforceExtents();
+  }
+  public enforceExtents() {
+    if (this.xlat < this.minxlat) {
+      this.xlat = this.minxlat;
+    } else if (this.xlat > this.maxxlat) {
+      this.xlat = this.maxxlat;
+    }
+    if (this.ylat < this.minylat) {
+      this.ylat = this.minylat;
+    } else if (this.ylat > this.maxylat) {
+      this.ylat = this.maxylat;
+    }
+    this.translateX = this.xlat;
+    this.translateY = this.ylat;
+  }
+
+  public calcExtents () {
+    // get the measurements we need
+    const wrapper = this.parent as GridLayout;
+    this.wpheight = wrapper.getMeasuredHeight() / scale;
+    this.wpwidth = wrapper.getMeasuredWidth() / scale;
+
+    this.width = this.wpwidth;
+
+    let mheight = this.getMeasuredHeight();
+    let cheight = this.computeHeight(this);
+    let cwcheight = this.computeHeight(wrapper) - cheight;
+    let scheight = mheight / scale;
+    const screenHeight = screen.mainScreen.heightDIPs;
+
+    const currentY = this.getLocationOnScreen().y;
+    // console.log('screenHeight is ' + screenHeight);
+    // console.log('currentY is ' + currentY);
+    // console.log('mheight is ' + mheight);
+    // console.log('cheight is ' + cheight);
+    // console.log('cwcheight is ' + cwcheight);
+    // console.log('scheight is ' + scheight);
+    // console.log('scale is ' + scale);
+    // console.log('minHt is ' + this.minHt);
+    this.pheight = this.getMeasuredHeight() / scale;
+    this.pwidth = this.getMeasuredWidth() / scale;
+    // console.log(`Wrapper Pixel width and height ${this.wpwidth} x ${this.wpheight}`);
+    // console.log(`Content Pixel width and height ${this.pwidth} x ${this.pheight}`);
+    this.hwidth = this.hheight = this.exposed;
+    // console.log(`Handle width and height ${this.hwidth} x ${this.hheight}`);
+
+    let diff = (this.pheight - cwcheight) / 2;
+    if (cwcheight !== this.wpheight && this._anchor === 'top') {
+      diff = 0;
+    }
+    if (cwcheight > this.wpheight) {
+      diff = 0;
+    }
+    // console.log('height diff is ' + diff);
+
+    this.height = this.pheight;
+
+
+    let ty = 0;
+    let tx = 0;
+    // console.log('anchor is ' + this._anchor);
+    if (this._anchor === 'bottom') {
+      ty = this.pheight - this.hheight - diff;
+      this.maxylat = ty;
+      this.minylat = ty - cheight + this.hheight;
+      this.minxlat = this.maxxlat = 0;
+    } else if (this._anchor === 'top') {
+      ty = this.hheight - this.pheight + diff;
+      this.minylat = ty;
+      this.maxylat = diff;
+      this.minxlat = this.maxxlat = 0;
+    } else if (this._anchor === 'left') {
+      tx = this.hwidth - this.pwidth;
+      this.minxlat = tx;
+      this.maxxlat = 0;
+      this.minylat = this.maxylat = 0;
+    } else if (this._anchor === 'right') {
+      tx = this.pwidth - this.hwidth;
+      this.maxxlat = tx;
+      this.minxlat = 0;
+      this.minylat = this.maxylat = 0;
+    } else if (this._anchor === 'topLeft') {
+      ty = this.hheight - this.pheight;
+      this.minylat = ty;
+      this.maxylat = 0;
+      tx = this.hwidth - this.pwidth;
+      this.minxlat = tx;
+      this.maxxlat = 0;
+    } else if (this._anchor === 'topRight') {
+      ty = this.hheight - this.pheight;
+      this.minylat = ty;
+      this.maxylat = 0;
+      tx = this.pwidth - this.hwidth;
+      this.maxxlat = tx;
+      this.minxlat = 0;
+    } else if (this._anchor === 'bottomLeft') {
+      ty = this.pheight - this.hheight;
+      this.maxylat = ty;
+      this.minylat = 0;
+      tx = this.hwidth - this.pwidth;
+      this.minxlat = tx;
+      this.maxxlat = 0;
+    } else if (this._anchor === 'bottomRight') {
+      ty = this.pheight - this.hheight;
+      this.maxylat = ty;
+      this.minylat = 0;
+      tx = this.pwidth - this.hwidth;
+      this.maxxlat = tx;
+      this.minxlat = 0;
+    }
+    // this.height = cheight;
   }
 
   /**
@@ -265,13 +234,13 @@ export class CommonContents extends StackLayout {
     const start = Date.now();
     let ty = this.translateY;
     let limit;
-    if (this.anchor === 'bottom') {
+    if (this._anchor === 'bottom') {
       step = -step;
       limit = this.minylat;
     } else {
       limit = this.maxylat;
     }
-    console.log('opening....');
+    // console.log('opening....');
 
     if (!animTime) {
       this.translateY = limit;
@@ -297,60 +266,75 @@ export class CommonContents extends StackLayout {
    * @param animTime Number of milliseconds across which panel should close
    *
    */
-  public close (animTime: number): void {
-    let step = (this.minylat - this.maxylat) / animTime;
+  public close (animTime: number = 0): void {
+    this.recalcExtents()
+    let stepy = animTime && (this.minylat - this.maxylat) / animTime;
+    let stepx = animTime && (this.minxlat - this.maxxlat) / animTime;
     const start = Date.now();
     let ty = this.translateY;
-    let limit;
-    if (this.anchor === 'bottom') {
-      step = -step;
-      limit = this.maxylat;
+    let tx = this.translateX;
+    let limitx, limity;
+    if (this._anchor.indexOf('bottom') === 0) {
+      stepy = -stepy;
+      limity = this.maxylat;
     } else {
-      limit = this.minylat;
+      limity = this.minylat;
     }
-    console.log('closing....');
+    if (this._anchor.indexOf('ight') !== -1) {
+      stepx = -stepx;
+      limitx = this.maxxlat;
+    } else {
+      limitx = this.minxlat;
+    }
 
     if (!animTime) {
-      this.translateY = limit;
+      this.translateY = this.ylat = limity;
+      this.translateX = this.xlat = limitx;
       return;
     }
 
     const cycle = () => {
       const tm = Date.now() - start;
-      ty += step * tm;
+      ty += stepy * tm;
       if (ty < this.minylat) ty = this.minylat;
       if (ty > this.maxylat) ty = this.maxylat;
       this.translateY = ty;
-      if (ty !== limit) {
+      tx += stepx * tm;
+      if (tx < this.minxlat) tx = this.minxlat;
+      if (tx > this.maxxlat) tx = this.maxxlat;
+      if (ty !== limity && tx !== limitx) {
         setTimeout(cycle);
       }
     };
     setTimeout(cycle);
   }
 
-  // /**
-  //  * Gets the text that should appear on the 'handle' of the drawer.
-  //  */
-  // public get label() {
-  //   return this.get('label') || '';
-  // }
-  // /**
-  //  * Sets the text that should appear on the 'handle' of the drawer.
-  //  */
-  // public set label(v: string) {
-  //   this.set('label', v);
-  // }
-  // /**
-  //  * Gets the position of the drawer home. Either 'top' or 'bottom' (default)
-  //  */
-  // public get anchor() {
-  //   return this.get('anchor') || 'bottom';
-  // }
-  // /**
-  //  * Sets the position of the drawer home. Either 'top' or 'bottom' (default)
-  //  */
-  // public set anchor(v: string) {
-  //   this.set('anchor', v);
-  // }
+  /**
+   * Gets the position of the drawer home. Either 'top' or 'bottom' (default)
+   */
+  public get anchor() {
+    return this._anchor || 'bottom';
+  }
+  /**
+   * Sets the position of the drawer home. Either 'top' or 'bottom' (default)
+   */
+  public set anchor(v: string) {
+    this._anchor = v;
+    if (this._didLayout) {
+      this.recalcExtents();
+      this.close();
+    }
+  }
+
+  public get exposed() {
+    return this._exposed || 8;
+  }
+  public set exposed(v) {
+    this._exposed = v;
+    if (this._didLayout) {
+      this.recalcExtents();
+      // this.close();
+    }
+  }
 }
 

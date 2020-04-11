@@ -13,7 +13,7 @@
         <Label text="Top" row="0" col="1" colSpan="2" backgroundColor="green" tap ="onTop"/>
         <Label text="Left" row="1" col="0" rowSpan="2" backgroundColor="blue" tap="onLeft"/>
         <pr:PullRevealPage id="wrapper" row="1" col="1" backgroundColor="yellow" tap="onReset">
-            <pr:PullReveal id="body" anchor="left" >
+            <pr:PullReveal id="body" anchor="bottom" >
                 <Label text="Hello there I am four"/>
                 <Label text="Hello there I am 4.1"/>
                 <Label text="Hello there I am 4.2"/>
