@@ -308,7 +308,7 @@ export class CommonContents extends StackLayout {
       if (tx < this.minxlat) tx = this.minxlat;
       if (tx > this.maxxlat) tx = this.maxxlat;
       this.translateX = tx;
-      if (ty !== limity && tx !== limitx) {
+      if (ty !== limity || tx !== limitx) {
         setTimeout(cycle);
       }
     };
@@ -333,10 +333,10 @@ export class CommonContents extends StackLayout {
   }
 
   public get exposed() {
-    return this._exposed || 8;
+    return Number(this._exposed) || 8;
   }
   public set exposed(v) {
-    this._exposed = v;
+    this._exposed = Number(v);
     if (this._didLayout) {
       this.recalcExtents();
       // this.close();

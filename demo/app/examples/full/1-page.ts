@@ -102,7 +102,7 @@ export function onPropertyCommitted (args) {
             changeAnchor(value);
             break;
     }
-    console.log('value for ' + pname + ' is ' + value);
+    // console.log('value for ' + pname + ' is ' + value);
 }
 
 /**
@@ -117,7 +117,7 @@ export function onPropertyCommitted (args) {
  * @param value
  */
 function changeFoobarLines (value) {
-    console.log('change foobar line count to ' + value);
+    // console.log('change foobar line count to ' + value);
     let newCount = value;
     let oldCount = foolabs.length;
     if (newCount > oldCount) {
@@ -150,7 +150,7 @@ function changeFoobarLines (value) {
  * @param value
  */
 function changeMainImageSize (value) {
-    console.log('change main image size to ' + value + '  x ' + value);
+    // console.log('change main image size to ' + value + '  x ' + value);
     pageData.set('picSize', value);
 }
 
@@ -162,7 +162,7 @@ function changeMainImageSize (value) {
  * @param value
  */
 function changeStyle (value) {
-    console.log('change style to ' + value);
+    // console.log('change style to ' + value);
 
     drawer.className = 'drawer-' + value;
 }
@@ -175,7 +175,7 @@ function changeStyle (value) {
  * @param value
  */
 function changeExposed (value) {
-    console.log('exposed amount changed to ' + value);
+    // console.log('exposed amount changed to ' + value);
 
     drawer.exposed = value;
 }
@@ -188,7 +188,7 @@ function changeExposed (value) {
  * @param value
  */
 function changeAnchor (value) {
-    console.log('anchor changed to ' + value);
+    // console.log('anchor changed to ' + value);
 
     if (value === 'top-left') value = 'topLeft';
     if (value === 'top-right') value = 'topRight';

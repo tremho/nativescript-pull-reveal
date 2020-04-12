@@ -9,11 +9,9 @@
     </ActionBar>
 
     <StackLayout>
-        <Button text="Nested layout 1" tap="onNested1"/>
-        <Button text="Nested layout 2" tap="onNested2"/>
-        <Button text="Nested layout 3" tap="onNested3"/>
-        <Button text="Full layout 1" tap="onFull1"/>
-        <Button text="Full layout 2" tap="onFull2"/>
-        <Button text="Full layout 3" tap="onFull3"/>
+        <Button text="Features Demonstration" tap="onFull1"/>
+        <Button text="Nested drawer component" tap="onNested1"/>
+        <Button text="3 Drawers and Anchors" tap="onNested2"/>
+        <Button text="Auto Open and Close" tap="onFull2"/>
     </StackLayout>
 </Page>

@@ -5,42 +5,38 @@
 >
 
     <ActionBar>
-        <Label text="Full Page 1"></Label>
+        <Label text="Open and close programattically"></Label>
     </ActionBar>
 
     <pr:PullRevealContext> <!-- grid wrapper -->
         <StackLayout> <!-- user content -->
-            <Image src="~/images/happyface.png"/>
-            <Label text="Here is some content"/>
+            <Label text="use the buttons below to open or close the drawer"/>
+            <Button text="close" tap="onClose"/>
+            <Button text="open" tap="onOpen"/>
+
+            <Label text="Use slider to adjust the time (ms) for opening/closing"
+                   textAlignment="center" marginTop="15"/>
+            <StackLayout orientation="horizontal" paddingLeft="10">
+                <Label text="0" paddingTop="15"/>
+                <Slider value="1000" minValue="0" maxValue="4000" loaded="onSliderLoaded"
+                        backgroundColor="darkgray" color="blue" width="300" padding="0"/>
+
+                <Label text="4000" paddingTop="15"/>
+            </StackLayout>
+            <Label text="{{ drawerTime }}" textAlignment="center" marginTop="-20"/>
         </StackLayout>
 
-        <pr:PullRevealDrawer anchor='bottom' label="This is an example" backgroundColor="black" color="whitesmoke" >
-            <Label text="Item 1"/>
-            <Label text="Item 2"/>
+        <pr:PullRevealDrawer id="drawer" exposed="20" backgroundColor="black" color="whitesmoke">
+            <Label text="Pull up to reveal or press open" textAlignment="center"/>
+            <Label class="mt-20" text="Drawer Item #2"/>
+            <flexbox-layout >
+                <Button text="tap to close" tap="onClose" fontSize="12" height="20" width="100"/>
+                <Label text = "Have a nice day" textAlignment="center"/>
+                <Label width="20"/>
+                <Image src="~/images/happyface.png" width="100" height="100" />
+            </flexbox-layout>
             <Label text="Item 3"/>
             <Label text="Item 4"/>
-            <!--            <Label text="Item 5"/>-->
-            <!--            <Label tesxt="Item 6"/>-->
-            <!--            <Label text="Item 7"/>-->
-            <!--            <Label text="Item 8"/>-->
-            <!--            <Label text="Item 9"/>-->
-            <!--            <flexbox-layout >-->
-            <!--                <Button text="tap to close" tap="closeDrawer" fontSize="12"/>-->
-            <!--                <Label text = "Have a nice day"/>-->
-            <!--                <Label width="20"/>-->
-            <!--                <Image src="~/images/happyface.png" width="20" height="20" />-->
-            <!--            </flexbox-layout>-->
-            <!--            <Label text="Item 10"/>-->
-            <!--            <Label text="Item 11"/>-->
-            <!--            <Label text="Item 12"/>-->
-            <!--            <Label text="Item 13"/>-->
-            <!--            <Label text="Item 14"/>-->
-            <!--            <Label text="Item 15"/>-->
-            <!--            <Label text="Item 16"/>-->
-            <!--            <Label text="Item 17"/>-->
-            <!--            <Label text="Item 18"/>-->
-            <!--            <Label text="Item 19"/>-->
-            <!--            <Label text="Item 20"/>-->
         </pr:PullRevealDrawer>
     </pr:PullRevealContext>
 

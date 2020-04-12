@@ -7,7 +7,7 @@
 - [X] I. change name from PullRevealPage to PullRevealContainer or
 PullRevealContext, and from PullReveal to PullRevealDrawer.
 
-- [ ] II. make sure we readjust for dynamic changes
+- [X] II. make sure we readjust for dynamic changes
     - changing the anchor property
     - changing the exposed property
     - adding an item to the drawer
@@ -32,16 +32,28 @@ PullRevealContext, and from PullReveal to PullRevealDrawer.
     - right
     - topLeft
         
-- [ ] VI. auto open and close demo
+- [X] VI. auto open and close demo
     - Since we don't have this in the drawer
     - nested page demo with button to open.
     - and one to close (could be in the drawer)
     - put a slider in drawer to adjust open/close time.
         - 0 - 5 seconds
+
+- [ ] VII. Test and adjust on all platform sizes
+    - [ ] android small
+    - [ ] android medium
+    - [ ] android large
+    - [ ] android xlarge
+    - [ ] ios small
+    - [ ] ios medium
+    - [ ] ios large
+    - [ ] ios xlarge
+    
                
-- [ ] VII. prep and publish
+- [ ] VIII. prep and publish
+    - [ ] clean comments and console and remove `old.common.xx`
     - [ ] label menu with demo names
     - [ ] documentation
     - [ ] update version to 1.1.0
-    - [ ] publish to npm
+    - [ ] publish to npm (after verified passing build)
                 
