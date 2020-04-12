@@ -8,7 +8,7 @@
         <Label text="Bottom left corner"></Label>
     </ActionBar>
 
-    <GridLayout columns="50, auto, *" rows="50, auto, *" width="210" height="210" backgroundColor="lightgray" >
+    <GridLayout columns="50, auto, *" rows="50, auto, *" width="100%" height="100%" backgroundColor="lightgray" >
         <Label text="Corner" row="0" col="0" backgroundColor="red" tap="onTopLeft"/>
         <Label text="Top" row="0" col="1" colSpan="2" backgroundColor="green" tap ="onTop"/>
         <Label text="Left" row="1" col="0" rowSpan="2" backgroundColor="blue" tap="onLeft"/>

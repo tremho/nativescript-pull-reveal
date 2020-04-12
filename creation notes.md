@@ -40,6 +40,7 @@ PullRevealContext, and from PullReveal to PullRevealDrawer.
         - 0 - 5 seconds
                
 - [ ] VII. prep and publish
+    - [ ] label menu with demo names
     - [ ] documentation
     - [ ] update version to 1.1.0
     - [ ] publish to npm

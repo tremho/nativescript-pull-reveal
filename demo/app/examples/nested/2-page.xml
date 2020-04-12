@@ -5,25 +5,55 @@
 >
 
     <ActionBar>
-        <Label text="Left side anchor"></Label>
+        <Label text="Multiple drawers and anchors"></Label>
     </ActionBar>
 
-    <GridLayout columns="50, auto, *" rows="50, auto, *" width="210" height="210" backgroundColor="lightgray" >
-        <Label text="Corner" row="0" col="0" backgroundColor="red" tap="onTopLeft"/>
-        <Label text="Top" row="0" col="1" colSpan="2" backgroundColor="green" tap ="onTop"/>
-        <Label text="Left" row="1" col="0" rowSpan="2" backgroundColor="blue" tap="onLeft"/>
-        <pr:PullRevealPage id="wrapper" row="1" col="1" backgroundColor="yellow" tap="onReset">
-            <pr:PullReveal id="body" anchor="bottom" >
-                <Label text="Hello there I am four"/>
-                <Label text="Hello there I am 4.1"/>
-                <Label text="Hello there I am 4.2"/>
-                <Label text="Hello there I am 4.3"/>
-                <Label text="Hello there I am 4.4"/>
-            </pr:PullReveal>
-        </pr:PullRevealPage>
-        <Label text="Right" row="1" col="2" backgroundColor="orange" tap="onRight"/>
-        <Label text="Bottom" row="2" col="1" backgroundColor="pink" tap="onBottom"/>
-        <Label text="Corner" row="2" col="2" backgroundColor="purple" tap="onBottomRight"/>
+    <GridLayout columns="50, auto, *" rows="50, auto, *" width="100%" height="100%" backgroundColor="lightgray" >
+        <pr:PullRevealContext row="0" col="0" colSpan="2" rowSpan="2" backgroundColor="#CCDEFA">
+            <StackLayout>
+                <Image src="~/images/happyface.png" width="180" height="180"/>
+                <Label text="Have a nice day" textAlignment="center"/>
+            </StackLayout>
+            <pr:PullRevealDrawer className="drawer-wooden" anchor="topLeft">
+                <Label text="Now is the time"/>
+                <Label text="for all good men"/>
+                <Label text="to come to the aid"/>
+                <Label text="of thier country"/>
+                <Label text="The quick brown fox"/>
+                <Label text="jumped easily over the"/>
+                <Label text="lazy dog's back."/>
+                <Label text="Haste makes waste"/>
+                <Label text="Never put off 'til tomorrow"/>
+                <Label text="what you can get done today"/>
+            </pr:PullRevealDrawer>
+        </pr:PullRevealContext>
+        <pr:PullRevealContext row="0" rowSpan="2" col="2" backgroundColor="yellow">
+            <StackLayout>
+                <Label marginTop="40" textWrap="true" fontSize="18"
+                       text="This shows three drawer sections with different anchors. Each drawer works independently."
+                       />
+            </StackLayout>
+            <pr:PullRevealDrawer className='drawer-metal' anchor="top" exposed="20">
+                <Image src="~/images/happyface.png"/>
+                <Label text="Smile!"/>
+            </pr:PullRevealDrawer>
+        </pr:PullRevealContext>
+
+        <Label row="2" col="0" textWrap="true" text="this part has no content"/>
+
+        <pr:PullRevealContext row="2" col="2" backgroundColor="lightblue">
+            <StackLayout>
+                <Image src="~/images/tall-tree.png" height="100%"/>
+            </StackLayout>
+            <pr:PullRevealDrawer anchor="left" exposed="85">
+                <Label text="          🦋    🦅"/>
+                <Label text="        🦋 🦋   🦋 "/>
+                <Label text="           🦋  🦋   🦋     >>"/>
+                <Label text="         🦋   🦋   🦋"/>
+                <Label text="        🦋 🦋   🦉 "/>
+                <Label text="            🦋  🐿️   🦋  "/>
+            </pr:PullRevealDrawer>
+        </pr:PullRevealContext>
     </GridLayout>
 
 </Page>
