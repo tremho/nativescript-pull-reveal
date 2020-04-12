@@ -268,7 +268,7 @@ export class CommonContents extends StackLayout {
    *
    */
   public close (animTime: number = 0): void {
-    this.recalcExtents()
+    this.recalcExtents();
     let stepy = animTime && (this.minylat - this.maxylat) / animTime;
     let stepx = animTime && (this.minxlat - this.maxxlat) / animTime;
     const start = Date.now();
@@ -294,7 +294,7 @@ export class CommonContents extends StackLayout {
       setTimeout(() => {
         this.translateY = this.ylat = limity;
         this.translateX = this.xlat = limitx;
-      })
+      });
       return;
     }
 

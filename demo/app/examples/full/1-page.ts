@@ -85,7 +85,7 @@ export function onPropertyCommitted (args) {
     const pname = args.propertyName;
     const data = pageData.get('formData');
     const value = data[pname];
-    switch(pname) {
+    switch (pname) {
         case 'foobarLines':
             changeFoobarLines(value);
             break;
@@ -119,17 +119,17 @@ export function onPropertyCommitted (args) {
 function changeFoobarLines (value) {
     console.log('change foobar line count to ' + value);
     let newCount = value;
-    let oldCount = foolabs.length
-    if(newCount > oldCount) {
+    let oldCount = foolabs.length;
+    if (newCount > oldCount) {
         for (let i = oldCount; i < newCount; i++) {
             let label = new Label();
-            label.text = 'foobar item ' + (i+1)
+            label.text = 'foobar item ' + (i + 1);
             foolabs.push(label);
             drawer.addChild(label);
         }
     }
     else {
-        while(oldCount > newCount) {
+        while (oldCount > newCount) {
             let child = foolabs.pop();
             drawer.removeChild(child);
             oldCount--;
@@ -139,7 +139,7 @@ function changeFoobarLines (value) {
     // we also must do that on a timeout to circumvent {N) layout race.
     setTimeout(() => {
         drawer.recalcExtents();
-    })
+    });
 }
 
 /**
@@ -150,8 +150,8 @@ function changeFoobarLines (value) {
  * @param value
  */
 function changeMainImageSize (value) {
-    console.log('change main image size to ' + value +'  x ' + value)
-    pageData.set('picSize', value)
+    console.log('change main image size to ' + value + '  x ' + value);
+    pageData.set('picSize', value);
 }
 
 /**
@@ -175,7 +175,7 @@ function changeStyle (value) {
  * @param value
  */
 function changeExposed (value) {
-    console.log('exposed amount changed to ' + value)
+    console.log('exposed amount changed to ' + value);
 
     drawer.exposed = value;
 }
@@ -190,10 +190,10 @@ function changeExposed (value) {
 function changeAnchor (value) {
     console.log('anchor changed to ' + value);
 
-    if(value === 'top-left') value = 'topLeft';
-    if(value === 'top-right') value = 'topRight';
-    if(value === 'bottom-left') value = 'bottomLeft';
-    if(value === 'bottom-right') value = 'bottomRight';
+    if (value === 'top-left') value = 'topLeft';
+    if (value === 'top-right') value = 'topRight';
+    if (value === 'bottom-left') value = 'bottomLeft';
+    if (value === 'bottom-right') value = 'bottomRight';
 
     drawer.anchor = value;
 
