@@ -27,7 +27,7 @@ PullRevealContext, and from PullReveal to PullRevealDrawer.
     - change style (demo css)
     - change picture (demo sizes)    
     
-- [ ] V. nested demo with multiple drawers
+- [X] V. nested demo with multiple drawers
     - bottom
     - right
     - topLeft
