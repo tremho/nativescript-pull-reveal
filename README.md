@@ -257,6 +257,9 @@ The current version 1.1.0 does not respond properly to an orientation change.
 - Working nicely on Android
 - Demo context working acceptably on medium-sized iOS device (iphone 11 simulator used to test)
 
+###### Version 1.1.1
+- The same as Version 1.1.0, but upversioned to fix a failed NPM publish.
+
 ----------
   
 ## Source code and Contributing

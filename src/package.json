@@ -1,6 +1,6 @@
 {
 	"name": "nativescript-pull-reveal",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "A container component that can be pulled across a page to reveal its content. Docks at either bottom or top.",
 	"main": "pull-reveal",
 	"typings": "index.d.ts",
