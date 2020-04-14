@@ -65,7 +65,7 @@ export class CommonContents extends StackLayout {
             this.calcExtents();
             this.enforceExtents();
             this.close();
-            this.translateY = this.ylat = this.maxylat;
+            // this.translateY = this.ylat = this.maxylat;
           });
         }
       }
@@ -141,37 +141,58 @@ export class CommonContents extends StackLayout {
     let scheight = mheight / scale;
     const screenHeight = screen.mainScreen.heightDIPs;
 
+
     const currentY = this.getLocationOnScreen().y;
-    // console.log('screenHeight is ' + screenHeight);
-    // console.log('currentY is ' + currentY);
-    // console.log('mheight is ' + mheight);
-    // console.log('cheight is ' + cheight);
-    // console.log('cwcheight is ' + cwcheight);
-    // console.log('scheight is ' + scheight);
-    // console.log('scale is ' + scale);
-    // console.log('minHt is ' + this.minHt);
+    console.log('screenHeight is ' + screenHeight);
+    console.log('currentY is ' + currentY);
+    console.log('mheight is ' + mheight);
+    console.log('cheight is ' + cheight);
+    console.log('cwcheight is ' + cwcheight);
+    console.log('scheight is ' + scheight);
+    console.log('scale is ' + scale);
+    console.log('minHt is ' + this.minHt);
     this.pheight = this.getMeasuredHeight() / scale;
     this.pwidth = this.getMeasuredWidth() / scale;
-    // console.log(`Wrapper Pixel width and height ${this.wpwidth} x ${this.wpheight}`);
-    // console.log(`Content Pixel width and height ${this.pwidth} x ${this.pheight}`);
+    console.log(`Wrapper Pixel width and height ${this.wpwidth} x ${this.wpheight}`);
+    console.log(`Content Pixel width and height ${this.pwidth} x ${this.pheight}`);
     this.hwidth = this.hheight = this.exposed;
-    // console.log(`Handle width and height ${this.hwidth} x ${this.hheight}`);
+    console.log(`Handle width and height ${this.hwidth} x ${this.hheight}`);
 
-    let diff = (this.pheight - cwcheight) / 2;
+    let diff = (this.pheight - cwcheight) / scale;
     if (cwcheight !== this.wpheight && this._anchor === 'top') {
       diff = 0;
     }
     if (cwcheight > this.wpheight) {
       diff = 0;
     }
-    // console.log('height diff is ' + diff);
+
+    console.log('diff is ' + diff);
 
     this.height = this.pheight;
 
 
     let ty = 0;
     let tx = 0;
-    // console.log('anchor is ' + this._anchor);
+
+    /*
+    This adjustment for ios is due to some not understood differences at the core platform level.
+    What's worse is that the behavior does not remain consistent between sizes of iOS target.
+    Worse still, the content rendered in the drawer is not always complete or consistently placed.
+    Hoping to find an answer for why this should be, and how to solve it.
+
+    As it stands, this works on iOS for a small test case, but probably not much beyond it.
+    The adjustments are voodoo and emperically derived.
+     */
+    if (this.ios) {
+      let iosAdjust = 0;
+      if (this.anchor === 'top') {
+        iosAdjust = -40;
+      } else {
+        iosAdjust = (this.wpheight - cwcheight) * .325;
+      }
+      console.log('iosAdjust is ' + iosAdjust);
+      diff += iosAdjust;
+    }
     if (this._anchor === 'bottom') {
       ty = this.pheight - this.hheight - diff;
       this.maxylat = ty;
@@ -221,6 +242,9 @@ export class CommonContents extends StackLayout {
       this.maxxlat = tx;
       this.minxlat = 0;
     }
+
+    console.log(`min, max y ${this.minylat}, ${this.maxylat}`);
+    console.log(`min, max x ${this.minxlat}, ${this.maxxlat}`);
     // this.height = cheight;
   }
 

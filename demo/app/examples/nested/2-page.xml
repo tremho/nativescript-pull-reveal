@@ -43,9 +43,9 @@
 
         <pr:PullRevealContext row="2" col="2" backgroundColor="lightblue">
             <StackLayout>
-                <Image src="~/images/tall-tree.png" height="100%"/>
+                <Image src="~/images/tall-tree.png" width="100" height="200"/>
             </StackLayout>
-            <pr:PullRevealDrawer anchor="left" exposed="85">
+            <pr:PullRevealDrawer anchor="left" exposed="55">
                 <Label text="          🦋    🦅"/>
                 <Label text="        🦋 🦋   🦋 "/>
                 <Label text="           🦋  🦋   🦋     >>"/>

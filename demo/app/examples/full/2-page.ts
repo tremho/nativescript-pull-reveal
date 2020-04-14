@@ -25,5 +25,6 @@ export function onClose () {
 export function onSliderLoaded (args) {
     const slider = args.object;
     slider.on("valueChange", (args) => {
-        props.set('drawerTime', args.value);
+        const v = Math.round(args.value);
+        props.set('drawerTime', v);
     })}

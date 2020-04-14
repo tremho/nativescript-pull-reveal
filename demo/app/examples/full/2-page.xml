@@ -16,13 +16,13 @@
 
             <Label text="Use slider to adjust the time (ms) for opening/closing"
                    textAlignment="center" marginTop="15"/>
-            <StackLayout orientation="horizontal" paddingLeft="10">
+            <flexbox-layout alignItems="flex-end" justifyContent="space-around">
                 <Label text="0" paddingTop="15"/>
                 <Slider value="1000" minValue="0" maxValue="4000" loaded="onSliderLoaded"
-                        backgroundColor="darkgray" color="blue" width="300" padding="0"/>
+                        backgroundColor="darkgray" color="blue" width="250"/>
 
                 <Label text="4000" paddingTop="15"/>
-            </StackLayout>
+            </flexbox-layout>
             <Label text="{{ drawerTime }}" textAlignment="center" marginTop="-20"/>
         </StackLayout>
 

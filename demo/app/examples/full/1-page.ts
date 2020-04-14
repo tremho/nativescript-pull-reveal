@@ -79,6 +79,7 @@ export function onNavigatingTo (args) {
 
     pageData.set("formStructure", formStructure);
     pageData.set("formData", formData);
+
 }
 
 export function onPropertyCommitted (args) {
