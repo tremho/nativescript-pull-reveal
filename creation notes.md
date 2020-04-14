@@ -51,9 +51,9 @@ PullRevealContext, and from PullReveal to PullRevealDrawer.
     
                
 - [ ] VIII. prep and publish
-    - [ ] clean comments and console and remove `old.common.xx`
-    - [ ] label menu with demo names
-    - [ ] documentation
-    - [ ] update version to 1.1.0
+    - [X] clean comments and console and remove `old.common.xx`
+    - [X] label menu with demo names
+    - [X] documentation
+    - [X] update version to 1.1.0
     - [ ] publish to npm (after verified passing build)
                 
