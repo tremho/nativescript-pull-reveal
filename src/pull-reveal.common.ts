@@ -143,20 +143,20 @@ export class CommonContents extends StackLayout {
 
 
     const currentY = this.getLocationOnScreen().y;
-    console.log('screenHeight is ' + screenHeight);
-    console.log('currentY is ' + currentY);
-    console.log('mheight is ' + mheight);
-    console.log('cheight is ' + cheight);
-    console.log('cwcheight is ' + cwcheight);
-    console.log('scheight is ' + scheight);
-    console.log('scale is ' + scale);
-    console.log('minHt is ' + this.minHt);
+    // console.log('screenHeight is ' + screenHeight);
+    // console.log('currentY is ' + currentY);
+    // console.log('mheight is ' + mheight);
+    // console.log('cheight is ' + cheight);
+    // console.log('cwcheight is ' + cwcheight);
+    // console.log('scheight is ' + scheight);
+    // console.log('scale is ' + scale);
+    // console.log('minHt is ' + this.minHt);
     this.pheight = this.getMeasuredHeight() / scale;
     this.pwidth = this.getMeasuredWidth() / scale;
-    console.log(`Wrapper Pixel width and height ${this.wpwidth} x ${this.wpheight}`);
-    console.log(`Content Pixel width and height ${this.pwidth} x ${this.pheight}`);
+    // console.log(`Wrapper Pixel width and height ${this.wpwidth} x ${this.wpheight}`);
+    // console.log(`Content Pixel width and height ${this.pwidth} x ${this.pheight}`);
     this.hwidth = this.hheight = this.exposed;
-    console.log(`Handle width and height ${this.hwidth} x ${this.hheight}`);
+    // console.log(`Handle width and height ${this.hwidth} x ${this.hheight}`);
 
     let diff = (this.pheight - cwcheight) / scale;
     if (cwcheight !== this.wpheight && this._anchor === 'top') {
@@ -166,7 +166,7 @@ export class CommonContents extends StackLayout {
       diff = 0;
     }
 
-    console.log('diff is ' + diff);
+    // console.log('diff is ' + diff);
 
     this.height = this.pheight;
 
@@ -190,7 +190,7 @@ export class CommonContents extends StackLayout {
       } else {
         iosAdjust = (this.wpheight - cwcheight) * .325;
       }
-      console.log('iosAdjust is ' + iosAdjust);
+      // console.log('iosAdjust is ' + iosAdjust);
       diff += iosAdjust;
     }
     if (this._anchor === 'bottom') {
@@ -243,9 +243,8 @@ export class CommonContents extends StackLayout {
       this.minxlat = 0;
     }
 
-    console.log(`min, max y ${this.minylat}, ${this.maxylat}`);
-    console.log(`min, max x ${this.minxlat}, ${this.maxxlat}`);
-    // this.height = cheight;
+    // console.log(`min, max y ${this.minylat}, ${this.maxylat}`);
+    // console.log(`min, max x ${this.minxlat}, ${this.maxxlat}`);
   }
 
   /**
