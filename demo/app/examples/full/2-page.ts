@@ -1,5 +1,5 @@
 
-import {Observable} from '@nativescript/core'
+import {Observable} from '@nativescript/core';
 
 let page, drawer;
 let props = new Observable();
@@ -9,7 +9,7 @@ export function onNavigatingTo(args) {
     props.set('drawerTime', 1000);
     page.bindingContext = props;
 
-    drawer = page.getViewById('drawer')
+    drawer = page.getViewById('drawer');
 }
 
 export function onOpen () {
@@ -27,4 +27,5 @@ export function onSliderLoaded (args) {
     slider.on("valueChange", (args) => {
         const v = Math.round(args.value);
         props.set('drawerTime', v);
-    })}
+    });
+}
