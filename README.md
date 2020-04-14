@@ -15,14 +15,29 @@
 [twitter-image]:https://img.shields.io/twitter/follow/Tremho1.svg?style=social&label=Follow%20me
 [twitter-url]:https://twitter.com/Tremho1
 
-![demo video](android-movie.gif)
+###### Android
+![demo video](android-show1.gif)
 
+
+###### iOS
+![demo video](ios-show1.gif)|
+
+#### (buggy on iOS) 
+For reasons not fully understood, the iOS version displays odd and inconsistent behaviors.
+These problems include:
+- The drawer placement may begin off screen, making it unreachable
+- The drawer contents render incorrectly and/or incompletely.
+- This condition changes not only between different device/screen sizes, but also with differing sizes of source content.
+
+The Pull Reveal component works well across all tested Android layout sizes.  The only caveat found here is that
+very small displays may not be large enough to hold the full drawer content, and thus this bit of content will be
+unreachable on these small devices.
 
 ## Features
-- Panel slides over content from top or from bottom
+- Panel slides over content from bottom, top, left, right, topLeft, topRight, bottomLeft or bottomRight.
 - XML and code declarations
-- Can be open and closed programmatically
-- Android and iOS
+- Can be opened and closed programmatically
+- Android and iOS (although, as noted, is currently buggy on iOS)
 
 ## Installation
 
@@ -61,8 +76,8 @@ throughout these examples.
 There are two components in the Pull Reveal module you need to 
 set up in order to stage a Pull Reveal component to your page.
 
-First, you must declare your page is hosting a PullReveal context.
-This is done by putting the `<pr:PullRequestPage>` tag at the top of your
+First, you must declare an enclosing containter as a `PullRevealContext`.
+This is done by putting the `<pr:PullRequestContext>` tag at the top of your
 page, and encompassing your page layout.
 
 For example, suppose your non-pull-reveal-enhanced page looks like this:
@@ -76,29 +91,29 @@ For example, suppose your non-pull-reveal-enhanced page looks like this:
 then you want to wrap it as follows:
 
 ```xml
-    <pr:PullRevealPage> 
+    <pr:PullRevealContext> 
         <StackLayout> 
             <Image src="~/images/happyface.png"/>
             <Label text="Here is some content"/>
         </StackLayout>
-    </pr:PullRevealPage>
+    </pr:PullRevealContext>
 ``` 
 Finally, we need to create the PullReveal Drawer itself and 
 populate its content:
 
 ```xml
-    <pr:PullRevealPage> 
+    <pr:PullRevealContext> 
         <StackLayout> 
             <Image src="~/images/happyface.png"/>
             <Label text="Here is some content"/>
         </StackLayout>
 
-        <pr:PullReveal id="pullDrawer" anchor="bottom" label="This is an example" backgroundColor="black" color="whitesmoke" >
+        <pr:PullRevealDrawer id="pullDrawer" anchor="bottom" backgroundColor="black" color="whitesmoke" >
             <Label text="Item 1"/>
             <Label text="Item 2"/>
             <Label text="Item 3"/>
-        </pr:PullReveal>
-    </pr:PullRevealPage>
+        </pr:PullRevealDrawer>
+    </pr:PullRevealContext>
 ```
 You should be able to put all types of content into the pull reveal drawer,
 and indeed, the PullReveal makes a great vehicle for pull-out settings and configuration needs.
@@ -109,9 +124,9 @@ The PullReveal accepts the following properties of its own:
 defined) and determines if the Pull Reveal comes down from the top or up
 from the bottom.
 
-- `label` defines an optional text label that can be seen the visible
-'grabbable' part of the component.  Use this for UI hints such as 'pull up to reveal settings', 
-or similar.
+- `exposed` defines the amount of drawer that should reveal itself into the context when the drawer is closed.
+This defines the 'grabble' part of the component.  You may wish to style your drawer appearance to present an
+appropriate looking 'handle', but this is of course optional.
 
 Standard properties for layout containers may also be used.  
 Styling options may of course also be applied via CSS classes, like other Nativescript components.
@@ -124,14 +139,14 @@ via code, particularly if your content is highly dynamic.
 One example of this is to have an empty PullReveal declared in 
 the xml markup:
 ```xml
-    <pr:PullRevealPage> 
+    <pr:PullRevealContext> 
         <StackLayout> 
             <Image src="~/images/happyface.png"/>
             <Label text="Here is some content"/>
         </StackLayout>
 
-        <pr:PullReveal id="pullDrawer"/>
-    </pr:PullRevealPage>
+        <pr:PullRevealDrawer id="pullDrawer"/>
+    </pr:PullRevealContext>
 ```
 
 and in code, get the instance of this by Id, then
@@ -145,6 +160,11 @@ fill it with your content items.
     pullDrawer.addChild(lbl);
     //... and so on
 ```
+
+The plugin demo app shows this feature via the "add/remove foobar lines" option.  Clicking on this stepper
+adds or removes child elements to the drawer.
+
+
 #### Programatically opening and closing 
 
 The `open()` and `close()` methods may be called by hendlers
@@ -178,25 +198,27 @@ the opening of the drawer.
 This effect may be nice to use as a notification vehicle for various forms of 
 information to be presented to a user in certain types of applications.
 
+The plugin demo app shows this feature in the "Auto Open and Close" example.
+
 
 -----
 
 ## Construction and API
 
-`PullRevealPage` inherits from [`GridLayout`](https://docs.nativescript.org/api-reference/classes/_ui_layouts_grid_layout_.gridlayout)  and so has all of the
+`PullRevealContext` inherits from [`GridLayout`](https://docs.nativescript.org/api-reference/classes/_ui_layouts_grid_layout_.gridlayout)  and so has all of the
 characteristics of that class.  It is used to provide a parallel context in the page
 in which the Pull Reveal drawer can slide over the content.  
 
-`PullReveal` inherits from [`StackLayout`](https://docs.nativescript.org/api-reference/modules/_ui_layouts_stack_layout_)  and so has all of the
+`PullRevealDrawer` inherits from [`StackLayout`](https://docs.nativescript.org/api-reference/modules/_ui_layouts_stack_layout_)  and so has all of the
 characteristics of that class.  It is used as the parent container for the
 content that you add to it.
 
-`PullReveal` defines the following properties 
+`PullRevealDrawer` defines the following properties 
 
 | Property | Default | Description |
 | --- | --- | --- |
-| `label` | '' | Optional text to appear on the exposed portion of the PullReveal control |
-| `anchor` | 'bottom' | either 'top' or 'bottom'. Defines the origin home position of the control. |
+| `exposed` | '' | Optional specification of how much of the drawer should be revealed when closed (DIP width/height) |
+| `anchor` | 'bottom' | one of: 'top', 'bottom', 'left', 'right', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'. Defines the origin home position of the control. | 
 
 and the following methods:
 
@@ -206,43 +228,37 @@ and the following methods:
 | `close` | animTime: number | Closes the panel programatically, if optional animTime parameter is passed, it is the number of milliseconds the closing will take. |
 
 #### CSS
-The exposed portion of the Pull Reveal drawer consists of the 'handle', which features the text of two double - ended
-arrows  (unicode 21D5) at the outermost edge, and followed by the label text, if it has been provided
-using the 'label' property.
+The demo app utilizes CSS classes to style the drawer, assigning a background color or graphic and padding values.  You can create and apply
+similar classes in your own applications to style your drawer as needed.
 
-THe 'handle' portion of this area is tagged with the CSS class name 'pull-reveal-handle'
-and the 'label' portion has the class name 'pull-reveal-label'.  These may be defined in your
-application CSS to adjust appearances somewhat.
-Be advised there may be unwanted side effects of changing the sizing of these elements very much. 
+The plugin itself does not provide any CSS values.
 
 ## Known Issues
 
-###### Still early in development!
-On 3/29/2020 the first version (1.0.0) was released for testing.
+###### Very first 1.0.0 version was garbage
+Don't use the 1.0.0 version, as it was, at best, a failed but inspirational prototype.  It suffered several 
+structural failings and only worked in a limited set of contexts.
 
-As issues arise, they will be recorded in this space.
+Version 1.1.0 is a completely re-written approach.
+ 
+###### Problems with iOS!
+Version 1.1.0 still has issues though, with inconsistencies on iOS.  
+The gist of these problems are listed above, and on the [GitHub issues page](https://github.com/tremho/nativescript-pull-reveal/issues).
+
+###### orientation response
+The current version 1.1.0 does not respond properly to an orientation change.    
 
 ###### Version 1.0.0
-- Not working properly on iOS. 
-  - Bottom anchor label is too low, exposed portion too small
-  - slide stops not working or not in correct position
-  - Top anchor beyond screen, making it unusable.  
+- Found to be very buggy outside of limited demo context
+- version 1.0.1 addressed some issues, but ultimately was not a fix.
+- Scrapped the approach and started over for 1.1.0    
 
-###### Version 1.0.1
-- Fixes the primary issues of version 1.0.0.
-- Behavior is consistent between platforms for nominal use cases.
+###### Version 1.1.0
+- Working nicely on Android
+- Demo context working acceptably on medium-sized iOS device (iphone 11 simulator used to test)
 
-A few known issues remain:
-  
-- There is buggy behavior in Nativescript layout handling under iOS that may interfere with proper placement of
-nested containers within the revealed content.  This issue is being investigated with Nativescript community experts.   
-- Changing the handle or label sizes via CSS may not always result in the correctly
-computed drawer stops and/or reveal sizing.  
-- Changing properties (label, anchor) programatically has no effect. 
 ----------
   
- 
-
 ## Source code and Contributing
 
 The source for this package is maintained on GitHub at:
@@ -255,7 +271,9 @@ Comments and contributions welcome!
 Please submit your Pull Requests, with as much explanation and examples you can provide to 
 support your changes.
 
-Feel free to email me at `steve@ohmert.com` to start
+Outstanding issues and requests for help are listed here: https://github.com/tremho/nativescript-pull-reveal/issues
+
+Or, feel free to email me at `steve@ohmert.com` to start
 a discussion for other suggestions.
  
  
