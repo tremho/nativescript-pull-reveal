@@ -40,14 +40,14 @@ PullRevealContext, and from PullReveal to PullRevealDrawer.
         - 0 - 5 seconds
 
 - [ ] VII. Test and adjust on all platform sizes
-    - [ ] android small
-    - [ ] android medium
-    - [ ] android large
-    - [ ] android xlarge
-    - [ ] ios small
-    - [ ] ios medium
-    - [ ] ios large
-    - [ ] ios xlarge
+    - [ ] android small (N/A size too small)
+    - [X] android medium
+    - [X] android large
+    - [X] android xlarge
+    - [ ] ios small (fails to reveal)
+    - [X] ios medium (buggy but will have to do for now)
+    - [ ] ios large (fails to reveal)
+    - [ ] ios xlarge (fails to reveal)
     
                
 - [ ] VIII. prep and publish
