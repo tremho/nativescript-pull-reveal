@@ -128,6 +128,16 @@ from the bottom.
 This defines the 'grabble' part of the component.  You may wish to style your drawer appearance to present an
 appropriate looking 'handle', but this is of course optional.
 
+Beginning with version 1.2.0, there is new property:
+
+- `stops` is an array of the limit values for drawer travel.  There are four elements to this array:  The minimum y value
+(that is, the point of travel that stops the drawer when sliding upward), the maximum y value (stop when sliding down), 
+the minimum x value and maximum x value (left- and right-most stop for the Left, Right, or diagnonal anchors).
+This property may be read or written as the full array only.
+The intended purpose of the `stops` property  is to allow the adopting application to overcome the sometimes 
+inconsistent behavior of the calculated stops based upon the content, with empirically derived results that fit 
+the context of the application it is used in.  
+
 Standard properties for layout containers may also be used.  
 Styling options may of course also be applied via CSS classes, like other Nativescript components.
 
@@ -213,12 +223,16 @@ in which the Pull Reveal drawer can slide over the content.
 characteristics of that class.  It is used as the parent container for the
 content that you add to it.
 
-`PullRevealDrawer` defines the following properties 
+`PullRevealDrawer` defines the following properties
+
+These properties may defined in the XML or read/written as members of the PullRevealDrawer object instance in code. 
 
 | Property | Default | Description |
 | --- | --- | --- |
 | `exposed` | '' | Optional specification of how much of the drawer should be revealed when closed (DIP width/height) |
-| `anchor` | 'bottom' | one of: 'top', 'bottom', 'left', 'right', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'. Defines the origin home position of the control. | 
+| `anchor` | 'bottom' | one of: 'top', 'bottom', 'left', 'right', 'topLeft', 'topRight', 'bottomLeft', 'bottomRight'. Defines the origin home position of the control. |
+| `stops` | array of 4 values: [ min Y, max Y, min X, max X ] values for each of the translation limits.  |
+
 
 and the following methods:
 
@@ -260,9 +274,19 @@ The current version 1.1.0 does not respond properly to an orientation change.
 ###### Version 1.1.1
 - The same as Version 1.1.0, but upversioned to fix a failed NPM publish.
 
+###### Version 1.2.0
+- Introduces the `stops` array property as a means for the adopting app to assume control over the drawer position limits,
+rather than using the values computed from the content, which for reasons still not understood are often incorrect 
+and/or inconsistent between devices. Note that this simply moves the problem to the domain of the application, which
+may require the developers to use empirical trial and error techniques to divine the proper values to use for each
+context.  This is __not__ ideal, and contrary to the original intent of this component, but it at least allows a
+way out of otherwise intractable situations.
+
 ----------
   
 ## Source code and Contributing
+
+Please contribute, especially if you have an idea of how to improve the shortcomings of this control!
 
 The source for this package is maintained on GitHub at:
 https://github.com/tremho/nativescript-pull-reveal

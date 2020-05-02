@@ -40,7 +40,7 @@ export class CommonContents extends StackLayout {
   private dragspeed: number = 5;
   private _anchor: string;
   private _exposed: number;
-  private label: string;
+  private setStops: number[];
   // private grabArea: StackLayout; // not using a container due to bug
   private pullLabel: Label;
   private pullHandle: Label;
@@ -53,7 +53,6 @@ export class CommonContents extends StackLayout {
 
 
     this._anchor = this.get('anchor') || 'bottom';
-    this.label = this.get('label') || '';
 
     this.on('layoutChanged', (eventData: EventData) => {
       // console.log('LAYOUT CHANGED');
@@ -63,6 +62,10 @@ export class CommonContents extends StackLayout {
           this._didLayout = true;
           setTimeout(() => {
             this.calcExtents();
+            const stopprop = this.get('stops');
+            if (stopprop && stopprop.length) {
+              this.stops = stopprop;
+            }
             this.enforceExtents();
             this.close();
             // this.translateY = this.ylat = this.maxylat;
@@ -113,6 +116,11 @@ export class CommonContents extends StackLayout {
     this.enforceExtents();
   }
   public enforceExtents() {
+    console.log(`min, max y ${this.minylat}, ${this.maxylat}`);
+    console.log(`min, max x ${this.minxlat}, ${this.maxxlat}`);
+
+    console.log(`current xlats ${this.xlat}, ${this.ylat}`);
+
     if (this.xlat < this.minxlat) {
       this.xlat = this.minxlat;
     } else if (this.xlat > this.maxxlat) {
@@ -143,33 +151,38 @@ export class CommonContents extends StackLayout {
 
 
     const currentY = this.getLocationOnScreen().y;
-    // console.log('screenHeight is ' + screenHeight);
-    // console.log('currentY is ' + currentY);
-    // console.log('mheight is ' + mheight);
-    // console.log('cheight is ' + cheight);
-    // console.log('cwcheight is ' + cwcheight);
-    // console.log('scheight is ' + scheight);
-    // console.log('scale is ' + scale);
-    // console.log('minHt is ' + this.minHt);
+    console.log('screenHeight is ' + screenHeight);
+    console.log('currentY is ' + currentY);
+    console.log('mheight is ' + mheight);
+    console.log('cheight is ' + cheight);
+    console.log('cwcheight is ' + cwcheight);
+    console.log('scheight is ' + scheight);
+    console.log('scale is ' + scale);
+    console.log('minHt is ' + this.minHt);
     this.pheight = this.getMeasuredHeight() / scale;
     this.pwidth = this.getMeasuredWidth() / scale;
-    // console.log(`Wrapper Pixel width and height ${this.wpwidth} x ${this.wpheight}`);
-    // console.log(`Content Pixel width and height ${this.pwidth} x ${this.pheight}`);
+    console.log(`Wrapper Pixel width and height ${this.wpwidth} x ${this.wpheight}`);
+    console.log(`Content Pixel width and height ${this.pwidth} x ${this.pheight}`);
     this.hwidth = this.hheight = this.exposed;
-    // console.log(`Handle width and height ${this.hwidth} x ${this.hheight}`);
+    console.log(`Handle width and height ${this.hwidth} x ${this.hheight}`);
 
     let diff = (this.pheight - cwcheight) / scale;
     if (cwcheight !== this.wpheight && this._anchor === 'top') {
       diff = 0;
     }
-    if (cwcheight > this.wpheight) {
-      diff = 0;
-    }
+    // if (cwcheight > this.wpheight) {
+    //   diff = 0;
+    // }
 
-    // console.log('diff is ' + diff);
+    console.log('diff is ' + diff);
 
     this.height = this.pheight;
 
+    // don't calc extents if we've specified the stops with properties
+    if (this.setStops && this.setStops.length) {
+      this.stops = this.setStops
+      return;
+    }
 
     let ty = 0;
     let tx = 0;
@@ -243,8 +256,6 @@ export class CommonContents extends StackLayout {
       this.minxlat = 0;
     }
 
-    // console.log(`min, max y ${this.minylat}, ${this.maxylat}`);
-    // console.log(`min, max x ${this.minxlat}, ${this.maxxlat}`);
   }
 
   /**
@@ -364,6 +375,33 @@ export class CommonContents extends StackLayout {
       this.recalcExtents();
       // this.close();
     }
+  }
+
+  public get stops () {
+    const stops = [];
+    stops.push(this.minylat);
+    stops.push(this.maxylat);
+    stops.push(this.minxlat);
+    stops.push(this.maxxlat);
+    return stops;
+  }
+  public set stops (v: any) {
+    let stops;
+    if (typeof v === 'string') {
+      const parts = v.split(',');
+      stops = [];
+      for (let i = 0; i < parts.length; i++) {
+        stops.push(Number(parts[i]) || 0);
+      }
+    } else {
+      stops = v || [];
+    }
+    this.setStops = stops;
+    this.minylat = stops[0] || 0;
+    this.maxylat = stops[1] || 0;
+    this.minxlat = stops[2] || 0;
+    this.maxxlat = stops[3] || 0;
+    this.enforceExtents();
   }
 }
 
