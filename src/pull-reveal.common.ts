@@ -180,7 +180,7 @@ export class CommonContents extends StackLayout {
 
     // don't calc extents if we've specified the stops with properties
     if (this.setStops && this.setStops.length) {
-      this.stops = this.setStops
+      this.stops = this.setStops;
       return;
     }
 
